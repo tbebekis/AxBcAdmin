@@ -14,7 +14,7 @@ namespace AxBcAdmin
         static readonly string ServicePrefix = "Microsoft Dynamics 365 Business Central Server";
         static List<BcService> fServices;
         ServiceController Service;
-        PsCommand Command;
+        //PsCommand Command;
 
         bool WaitForStatus(ServiceControllerStatus DesiredStatus)
         {

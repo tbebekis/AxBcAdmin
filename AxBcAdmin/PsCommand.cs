@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 namespace AxBcAdmin
 {
 
-    // NOTE: cannot make ImportPSModulesFromPath() to work
+    // NOTE: I tried to do it "by the book"
+    // but I found no way to make ImportPSModulesFromPath() to work
+    // so the last resort is to use the XmlDoc
     /*
     internal class PsCommand
     {
