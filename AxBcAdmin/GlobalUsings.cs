@@ -1,0 +1,9 @@
+﻿global using System.Management;
+global using System.ServiceProcess;
+global using System.Text;
+global using System.Data;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using System.Windows.Forms;
+global using System.Xml;
+global using System.Reflection;

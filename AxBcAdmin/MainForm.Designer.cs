@@ -93,7 +93,7 @@
             // Splitter.Panel1
             // 
             Splitter.Panel1.Controls.Add(pnlServices);
-            Splitter.Panel1.Paint += splitContainer1_Panel1_Paint;
+ 
             // 
             // Splitter.Panel2
             // 

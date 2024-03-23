@@ -3,10 +3,18 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <!-- <Nullable>enable</Nullable> -->
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+	<ItemGroup>
+		<!-- <PackageReference Include="System.Management" Version="7.0.2" /> -->
+		<!-- <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" /> -->
+		<PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.0" />
+		<PackageReference Include="System.Management.Automation" Version="7.4.0" />
+		
+	</ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
