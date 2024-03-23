@@ -87,6 +87,24 @@ namespace AxBcAdmin
             new ConfigItemInfo("Database", "SQL Query Logging Threshold", "SqlLongRunningThreshold"),
 
 
+            new ConfigItemInfo("Develompment", "Allowed Extension Target Level", "ExtensionAllowedTargetLevel"),
+            new ConfigItemInfo("Develompment", "Debugger – Long Running SQL Statements Threshold", "LongRunningSqlStatementsInDebuggerThreshold"),
+            new ConfigItemInfo("Develompment", "Debugger - Number of SQL Statements to Show", "AmountOfSqlStatementsInDebugger"),
+            new ConfigItemInfo("Develompment", "Debugger - Show Long Running SQL Statements", "EnableLongRunningSqlStatementsInDebugger"),
+            new ConfigItemInfo("Develompment", "Debugger - Show Long Running SQL Statements", "EnableSqlInformationDebugger"),
+            new ConfigItemInfo("Develompment", "Debugging Allowed", "DebuggingAllowed"),
+            new ConfigItemInfo("Develompment", "Enable Debugging", "EnableDebugging"),
+            new ConfigItemInfo("Develompment", "Enable Developer Service Endpoint", "DeveloperServicesEnabled"),
+            new ConfigItemInfo("Develompment", "Enable Loading Application Symbol References at Server Startup", "EnableSymbolLoadingAtServerStartup"),
+            new ConfigItemInfo("Develompment", "Enable Multithreaded Compilation of Published Extensions Service Endpoint", "EnableMultithreadedCompilation"),
+            new ConfigItemInfo("Develompment", "Enable SSL", "DeveloperServicesSSLEnabled"),
+            new ConfigItemInfo("Develompment", "Enable Test Automation", "TestAutomationEnabled"),
+            new ConfigItemInfo("Develompment", "HttpClient AL Function Maximum Timeout", "NavHttpClientMaxTimeout"),
+            new ConfigItemInfo("Develompment", "HttpClient AL Function Response Size", "NavHttpClientMaxResponseContentSize"),
+            new ConfigItemInfo("Develompment", "Port", "DeveloperServicesPort"),
+            new ConfigItemInfo("Develompment", "ForceExtensionAllowedTargetLevel", "ForceExtensionAllowedTargetLevel"),
+
+
             new ConfigItemInfo("Client services", "Allowed File Types", "ClientServicesAllowedFileTypes"),
             new ConfigItemInfo("Client services", "Chunk Size", "ClientServicesChunkSize"),
             new ConfigItemInfo("Client services", "Compression Threshold", "ClientServicesCompressionThreshold"),
@@ -148,9 +166,7 @@ namespace AxBcAdmin
             new ConfigItemInfo("OData services", "V4 Max Concurrent Requests", "ODataV4MaxConcurrentRequests"),
             new ConfigItemInfo("OData services", "V4 Max Queued Requests", "ODataV4MaxRequestQueueSize"),
             new ConfigItemInfo("OData services", "Timeout", "ODataServicesOperationTimeout"),
-
-
-
+ 
             new ConfigItemInfo("NAS services", "Enable Debugging", "NASServicesEnableDebugging"),
             new ConfigItemInfo("NAS services", "Run NAS Services with Admin Rights", "NASServicesRunWithAdminRights"),
             new ConfigItemInfo("NAS services", "Startup Argument", "NASServicesStartupArgument"),
@@ -242,22 +258,6 @@ namespace AxBcAdmin
             new ConfigItemInfo("Extensions", "Solution Version Extension", "SolutionVersionExtension"),
 
 
-            new ConfigItemInfo("Develompment", "Allowed Extension Target Level", "ExtensionAllowedTargetLevel"),
-            new ConfigItemInfo("Develompment", "Debugger – Long Running SQL Statements Threshold", "LongRunningSqlStatementsInDebuggerThreshold"),
-            new ConfigItemInfo("Develompment", "Debugger - Number of SQL Statements to Show", "AmountOfSqlStatementsInDebugger"),
-            new ConfigItemInfo("Develompment", "Debugger - Show Long Running SQL Statements", "EnableLongRunningSqlStatementsInDebugger"),
-            new ConfigItemInfo("Develompment", "Debugger - Show Long Running SQL Statements", "EnableSqlInformationDebugger"),
-            new ConfigItemInfo("Develompment", "Debugging Allowed", "DebuggingAllowed"),
-            new ConfigItemInfo("Develompment", "Enable Debugging", "EnableDebugging"),
-            new ConfigItemInfo("Develompment", "Enable Developer Service Endpoint", "DeveloperServicesEnabled"),
-            new ConfigItemInfo("Develompment", "Enable Loading Application Symbol References at Server Startup", "EnableSymbolLoadingAtServerStartup"),
-            new ConfigItemInfo("Develompment", "Enable Multithreaded Compilation of Published Extensions Service Endpoint", "EnableMultithreadedCompilation"),
-            new ConfigItemInfo("Develompment", "Enable SSL", "DeveloperServicesSSLEnabled"),
-            new ConfigItemInfo("Develompment", "Enable Test Automation", "TestAutomationEnabled"),
-            new ConfigItemInfo("Develompment", "HttpClient AL Function Maximum Timeout", "NavHttpClientMaxTimeout"),
-            new ConfigItemInfo("Develompment", "HttpClient AL Function Response Size", "NavHttpClientMaxResponseContentSize"),
-            new ConfigItemInfo("Develompment", "Port", "DeveloperServicesPort"),
-            new ConfigItemInfo("Develompment", "ForceExtensionAllowedTargetLevel", "ForceExtensionAllowedTargetLevel"),
 
 
             new ConfigItemInfo("Compatibility", "AL Legacy Compatible Date Format Culture List", "ALCompatibleDateFormatCultureList"),

@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace AxBcAdmin
 {
@@ -13,7 +14,14 @@ namespace AxBcAdmin
             {
                 Key = Element.Attributes[0].Value;
                 Value = Element.Attributes[1].Value;
-                Name = Key;
+
+
+                // split on capital letters
+                var Words = Regex.Matches(Key, @"([A-Z][a-z]+)")
+                            .Cast<Match>()
+                            .Select(m => m.Value);
+
+                Name = string.Join(" ", Words); 
             }
 
             if (Comment != null)
@@ -41,6 +49,10 @@ namespace AxBcAdmin
 
                 }
             }
+
+            ConfigItemInfo ItemInfo = ConfigItemInfo.List.FirstOrDefault(item => item.Key == this.Key);
+            this.Category = ItemInfo != null ? ItemInfo.Category : "Miscs"; 
+ 
         }
 
         public override string ToString()

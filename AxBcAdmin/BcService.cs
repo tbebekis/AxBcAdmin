@@ -19,10 +19,20 @@ namespace AxBcAdmin
 
         bool WaitForStatus(ServiceControllerStatus DesiredStatus)
         {
+            TimeSpan Timeout = new TimeSpan(0, 0, 20);
+
             for (int i = 0; i < 5; i++)
             {
-                TimeSpan Timeout = new TimeSpan(0, 0, 5);  
-                Service.WaitForStatus(DesiredStatus, Timeout);
+                try
+                {
+                    Service.WaitForStatus(DesiredStatus, Timeout);
+                }
+                catch  
+                {
+                }
+
+                Application.DoEvents();
+
                 if (Service.Status == DesiredStatus)
                 {
                     return true;
@@ -85,8 +95,9 @@ namespace AxBcAdmin
                 {
                     int Index = S.IndexOf('"', 1);
                     S = S.Substring(1, Index - 1);
+
                     ServiceFolder = Path.GetDirectoryName(S);
-                    S = Path.Combine(S, "CustomSettings.config");
+                    S = Path.Combine(ServiceFolder, "CustomSettings.config");
 
                     if (!File.Exists(S))
                         App.Throw($"Settings File {S} not found");
@@ -113,20 +124,20 @@ namespace AxBcAdmin
 
                 if (IsRunningFlag)
                 {
-                    App.Log($"{InstanceName}: Stopping Service ");
+                    App.Log($"{InstanceName}: Stopping Service. Please wait...");
                     Application.DoEvents();
                     Service.Stop();
                     if (!WaitForStatus(ServiceControllerStatus.Stopped))
-                        App.Throw($"{InstanceName}: Cannot stop service.");
+                        App.Throw($"{InstanceName}: Cannot stop service. Please consult System EventLog.");
                       App.Log($"{InstanceName}: Service is stopped");
                     Application.DoEvents();
                 }
 
-                App.Log($"{InstanceName}: Starting Service");
+                App.Log($"{InstanceName}: Starting Service. Please wait...");
                 Application.DoEvents();
                 Service.Start();
                 if (!WaitForStatus(ServiceControllerStatus.Running))
-                    App.Throw($"{InstanceName}: Cannot start service.");
+                    App.Throw($"{InstanceName}: Cannot start service. Please consult System EventLog.");
                 App.Log($"{InstanceName}: Service is restarted");
                 Application.DoEvents();
             }
@@ -141,11 +152,11 @@ namespace AxBcAdmin
             {
                 try
                 { 
-                    App.Log($"{InstanceName}: Starting Service");
+                    App.Log($"{InstanceName}: Starting Service. Please wait....");
                     Application.DoEvents();
                     Service.Start();
                     if (!WaitForStatus(ServiceControllerStatus.Running))
-                        App.Throw($"{InstanceName}: Cannot start service.");
+                        App.Throw($"{InstanceName}: Cannot start service. Please consult System EventLog.");
                     App.Log($"{InstanceName}: Service is started");
                     Application.DoEvents();
                 }
@@ -167,11 +178,11 @@ namespace AxBcAdmin
                 if (IsRunning)
                 {
  
-                    App.Log($"{InstanceName}: Stopping Service ");
+                    App.Log($"{InstanceName}: Stopping Service. Please wait... ");
                     Application.DoEvents();
                     Service.Stop();
                     if (!WaitForStatus(ServiceControllerStatus.Stopped))
-                        App.Throw($"{InstanceName}: Cannot stop service.");
+                        App.Throw($"{InstanceName}: Cannot stop service. Please consult System EventLog.");
                     App.Log($"{InstanceName}: Service is stopped");
                     Application.DoEvents();
                 }
@@ -265,7 +276,8 @@ namespace AxBcAdmin
 
             }
         }
-        public string Status { get { return Service.Status.ToString(); } } 
+        public ServiceControllerStatus Status { get { return Service.Status; } }
+        public string StatusText { get { return Service.Status.ToString(); } } 
         public string DisplayName { get; }      // e.g. Microsoft Dynamics 365 Business Central Server [BC230]
         public string ServiceName { get; }      // e.g. ??
         public string InstanceName { get; }     // e.g. BC230

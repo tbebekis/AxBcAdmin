@@ -33,7 +33,11 @@
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             lblServiceConfigFilePath = new ToolStripStatusLabel();
             Splitter = new SplitContainer();
-            edtLog = new RichTextBox();
+            pnlSettings = new Panel();
+            Pager = new TabControl();
+            toolStrip1 = new ToolStrip();
+            btnCloseServiceConfig = new ToolStripButton();
+            toolStripSeparator3 = new ToolStripSeparator();
             pnlServices = new Panel();
             gridServices = new DataGridView();
             dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -43,14 +47,19 @@
             btnRestartService = new ToolStripButton();
             btnStopService = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            btnShowConfigText = new ToolStripButton();
             btnShowServiceConfig = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             btnExit = new ToolStripButton();
+            edtLog = new RichTextBox();
+            btnSaveServiceConfig = new ToolStripButton();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
             Splitter.Panel2.SuspendLayout();
             Splitter.SuspendLayout();
+            pnlSettings.SuspendLayout();
+            toolStrip1.SuspendLayout();
             pnlServices.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridServices).BeginInit();
             ToolBar.SuspendLayout();
@@ -92,8 +101,8 @@
             // 
             // Splitter.Panel1
             // 
+            Splitter.Panel1.Controls.Add(pnlSettings);
             Splitter.Panel1.Controls.Add(pnlServices);
- 
             // 
             // Splitter.Panel2
             // 
@@ -103,23 +112,53 @@
             Splitter.SplitterWidth = 6;
             Splitter.TabIndex = 2;
             // 
-            // edtLog
+            // pnlSettings
             // 
-            edtLog.BackColor = Color.Gainsboro;
-            edtLog.Dock = DockStyle.Fill;
-            edtLog.Font = new Font("Cascadia Code", 9F);
-            edtLog.Location = new Point(0, 0);
-            edtLog.Name = "edtLog";
-            edtLog.ReadOnly = true;
-            edtLog.Size = new Size(978, 61);
-            edtLog.TabIndex = 3;
-            edtLog.Text = "";
+            pnlSettings.Controls.Add(Pager);
+            pnlSettings.Controls.Add(toolStrip1);
+            pnlSettings.Location = new Point(292, 22);
+            pnlSettings.Name = "pnlSettings";
+            pnlSettings.Size = new Size(593, 500);
+            pnlSettings.TabIndex = 2;
+            // 
+            // Pager
+            // 
+            Pager.Dock = DockStyle.Fill;
+            Pager.Location = new Point(0, 31);
+            Pager.Name = "Pager";
+            Pager.SelectedIndex = 0;
+            Pager.Size = new Size(593, 469);
+            Pager.TabIndex = 5;
+            // 
+            // toolStrip1
+            // 
+            toolStrip1.ImageScalingSize = new Size(24, 24);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnCloseServiceConfig, toolStripSeparator3 });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(593, 31);
+            toolStrip1.TabIndex = 4;
+            toolStrip1.Text = "toolStrip1";
+            // 
+            // btnCloseServiceConfig
+            // 
+            btnCloseServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnCloseServiceConfig.Image = Properties.Resources.door_open;
+            btnCloseServiceConfig.ImageTransparentColor = Color.Magenta;
+            btnCloseServiceConfig.Name = "btnCloseServiceConfig";
+            btnCloseServiceConfig.Size = new Size(28, 28);
+            btnCloseServiceConfig.Text = "Close";
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 31);
             // 
             // pnlServices
             // 
             pnlServices.Controls.Add(gridServices);
             pnlServices.Controls.Add(ToolBar);
-            pnlServices.Location = new Point(38, 23);
+            pnlServices.Location = new Point(12, 12);
             pnlServices.Name = "pnlServices";
             pnlServices.Size = new Size(253, 523);
             pnlServices.TabIndex = 1;
@@ -136,7 +175,7 @@
             // 
             // dataGridViewTextBoxColumn1
             // 
-            dataGridViewTextBoxColumn1.DataPropertyName = "Name";
+            dataGridViewTextBoxColumn1.DataPropertyName = "InstanceName";
             dataGridViewTextBoxColumn1.HeaderText = "Name";
             dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
@@ -149,7 +188,7 @@
             // ToolBar
             // 
             ToolBar.ImageScalingSize = new Size(24, 24);
-            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, toolStripSeparator1, btnShowServiceConfig, toolStripSeparator2, btnExit });
+            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, toolStripSeparator1, btnShowConfigText, btnShowServiceConfig, toolStripSeparator2, btnExit });
             ToolBar.Location = new Point(0, 0);
             ToolBar.Name = "ToolBar";
             ToolBar.Size = new Size(253, 31);
@@ -177,7 +216,7 @@
             // btnStopService
             // 
             btnStopService.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnStopService.Image = Properties.Resources.control_stop_blue;
+            btnStopService.Image = Properties.Resources.control_stop;
             btnStopService.ImageTransparentColor = Color.Magenta;
             btnStopService.Name = "btnStopService";
             btnStopService.Size = new Size(28, 28);
@@ -186,7 +225,16 @@
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 25);
+            toolStripSeparator1.Size = new Size(6, 31);
+            // 
+            // btnShowConfigText
+            // 
+            btnShowConfigText.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnShowConfigText.Image = Properties.Resources.text_document;
+            btnShowConfigText.ImageTransparentColor = Color.Magenta;
+            btnShowConfigText.Name = "btnShowConfigText";
+            btnShowConfigText.Size = new Size(28, 28);
+            btnShowConfigText.Text = "Show Configuration Text";
             // 
             // btnShowServiceConfig
             // 
@@ -200,7 +248,7 @@
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(6, 25);
+            toolStripSeparator2.Size = new Size(6, 31);
             // 
             // btnExit
             // 
@@ -211,6 +259,27 @@
             btnExit.Size = new Size(28, 28);
             btnExit.Text = "Exit";
             // 
+            // edtLog
+            // 
+            edtLog.BackColor = Color.Gainsboro;
+            edtLog.Dock = DockStyle.Fill;
+            edtLog.Font = new Font("Cascadia Code", 9F);
+            edtLog.Location = new Point(0, 0);
+            edtLog.Name = "edtLog";
+            edtLog.ReadOnly = true;
+            edtLog.Size = new Size(978, 61);
+            edtLog.TabIndex = 3;
+            edtLog.Text = "";
+            // 
+            // btnSaveServiceConfig
+            // 
+            btnSaveServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnSaveServiceConfig.Image = Properties.Resources.table_save;
+            btnSaveServiceConfig.ImageTransparentColor = Color.Magenta;
+            btnSaveServiceConfig.Name = "btnSaveServiceConfig";
+            btnSaveServiceConfig.Size = new Size(28, 28);
+            btnSaveServiceConfig.Text = "Save Settings";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -219,6 +288,7 @@
             Controls.Add(Splitter);
             Controls.Add(statusStrip1);
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
@@ -226,6 +296,10 @@
             Splitter.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Splitter).EndInit();
             Splitter.ResumeLayout(false);
+            pnlSettings.ResumeLayout(false);
+            pnlSettings.PerformLayout();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             pnlServices.ResumeLayout(false);
             pnlServices.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gridServices).EndInit();
@@ -245,8 +319,6 @@
         private RichTextBox edtLog;
         private Panel pnlServices;
         private DataGridView gridServices;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn colStatus;
         private ToolStrip ToolBar;
         private ToolStripButton btnStartService;
         private ToolStripButton btnRestartService;
@@ -255,5 +327,14 @@
         private ToolStripButton btnShowServiceConfig;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton btnExit;
+        private Panel pnlSettings;
+        private ToolStrip toolStrip1;
+        private ToolStripButton btnCloseServiceConfig;
+        private ToolStripSeparator toolStripSeparator3;
+        private TabControl Pager;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn colStatus;
+        private ToolStripButton btnShowConfigText;
+        private ToolStripButton btnSaveServiceConfig;
     }
 }
