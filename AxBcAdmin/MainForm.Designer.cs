@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             statusStrip1 = new StatusStrip();
             lblServiceName = new ToolStripStatusLabel();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -52,9 +53,9 @@
             btnShowConfigText = new ToolStripButton();
             btnShowServiceConfig = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            btnAboutDialog = new ToolStripButton();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
-            btnAboutDialog = new ToolStripButton();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -267,6 +268,15 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 31);
             // 
+            // btnAboutDialog
+            // 
+            btnAboutDialog.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnAboutDialog.Image = Properties.Resources.information;
+            btnAboutDialog.ImageTransparentColor = Color.Magenta;
+            btnAboutDialog.Name = "btnAboutDialog";
+            btnAboutDialog.Size = new Size(28, 28);
+            btnAboutDialog.Text = "About";
+            // 
             // btnExit
             // 
             btnExit.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -288,15 +298,6 @@
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
-            // btnAboutDialog
-            // 
-            btnAboutDialog.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnAboutDialog.Image = Properties.Resources.information;
-            btnAboutDialog.ImageTransparentColor = Color.Magenta;
-            btnAboutDialog.Name = "btnAboutDialog";
-            btnAboutDialog.Size = new Size(28, 28);
-            btnAboutDialog.Text = "About";
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -304,6 +305,7 @@
             ClientSize = new Size(978, 706);
             Controls.Add(Splitter);
             Controls.Add(statusStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
