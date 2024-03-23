@@ -10,31 +10,40 @@ using System.Threading.Tasks;
 
 namespace AxBcAdmin
 {
+
+    // NOTE: cannot make ImportPSModulesFromPath() to work
+    /*
     internal class PsCommand
     {
-        /* private */
-        const string CommandName = "Set-NAVServerConfiguration";
+ 
+        const string CommandName = "Set-NavServerConfiguration";
         BcService BCS;
         InitialSessionState SessionState;
         SessionStateVariableEntry SessionStateEntry;
+        Runspace Runspace;
         //ModuleSpecification Module;
         string AdminModulePath;             // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\NavAdminTool.ps1
-
-
-        /* construction */
+ 
         public PsCommand(BcService BCS) 
         { 
             this.BCS = BCS;
             AdminModulePath = Path.Combine(BCS.ServiceFolder, "NavAdminTool.ps1");   
 
-            SessionState = InitialSessionState.Create(); 
+            SessionState = InitialSessionState.CreateDefault2();
+            SessionState.ExecutionPolicy = Microsoft.PowerShell.ExecutionPolicy.Unrestricted;
+
+            // CAUTION: NOT WORKING
+            // Module.Count is always 0
             SessionState.ImportPSModulesFromPath(AdminModulePath);
 
-            SessionStateEntry = new SessionStateVariableEntry("AllowedCommands", new[] { CommandName }, "Allowed command list.");
-            SessionState.Variables.Add(SessionStateEntry);
-        }
+            Runspace = RunspaceFactory.CreateRunspace(SessionState);
+            Runspace.Open();
 
-        /* public */
+            //SessionStateEntry = new SessionStateVariableEntry("AllowedCommands", new[] { CommandName }, "Allowed command list.");
+            //SessionState.Variables.Add(SessionStateEntry);
+        }
+ 
+ 
         public void SaveChanges(List<ConfigItem> ChangedList)
         {
             Collection<PSObject> InvokeResult;
@@ -43,9 +52,11 @@ namespace AxBcAdmin
                 // Set-NAVServerConfiguration -ServerInstance $InstanceName -KeyName DatabaseName -KeyValue "DATABASE_NAME"
                 using (PowerShell PS = PowerShell.Create(SessionState))
                 {
+                    PS.Runspace = Runspace;
                     try
-                    {
-                        PS.AddCommand(CommandName); // Set-NAVServerConfiguration
+                    {    
+
+                        PS.AddCommand(CommandName, true); // Set-NAVServerConfiguration
                         PS.AddParameter("-ServerInstance", BCS.InstanceName);
                         PS.AddParameter("-KeyName", Item.Key);
                         PS.AddParameter("-KeyValue", Item.Value);
@@ -63,4 +74,5 @@ namespace AxBcAdmin
 
  
     }
+    */
 }

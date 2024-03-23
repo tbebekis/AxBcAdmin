@@ -308,11 +308,13 @@ namespace AxBcAdmin
                 }
                 else
                 {
-                    BCS.SaveConfig();
-                    Log("Config is saved");
+                   if (BCS.SaveConfig())
+                    {
+                        Log("Config is saved");
 
-                    Log("Restart the service for the changes to take effect");
-                    MessageBox.Show("Restart the service for the changes to take effect");
+                        Log("Restart the service for the changes to take effect");
+                        MessageBox.Show("Restart the service for the changes to take effect");
+                    }
                 }
             }
         }

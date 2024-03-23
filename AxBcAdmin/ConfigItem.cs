@@ -5,6 +5,8 @@ namespace AxBcAdmin
 {
     internal class ConfigItem
     {
+        string fValue;
+
         /* construction */
         public ConfigItem(XmlElement Element, XmlComment Comment)
         {
@@ -14,7 +16,7 @@ namespace AxBcAdmin
             if (Element != null && Element.Attributes.Count >= 2)
             {
                 Key = Element.Attributes[0].Value;
-                Value = Element.Attributes[1].Value;
+                fValue = Element.Attributes[1].Value;
 
 
                 // split on capital letters
@@ -63,13 +65,25 @@ namespace AxBcAdmin
         }
 
         /* properties */
-        public string Category { get; set; }
-        public string Name { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public string Category { get; }
+        public string Name { get; }
+        public string Key { get; }
+
+        public string Value
+        {
+            get { return fValue; }
+            set
+            {
+                if (value != fValue)
+                {
+                    fValue = value;
+                    IsChanged = true;
+                }
+            }
+        }
         public string CommentText { get; }
         public List<string> Options { get; } = new List<string>();
         public bool HasOptions { get { return Options.Count > 0; } }
-        public bool IsChanged { get; set; }
+        public bool IsChanged { get; private set; }
     }
 }

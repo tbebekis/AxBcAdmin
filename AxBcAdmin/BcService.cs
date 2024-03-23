@@ -193,61 +193,51 @@ namespace AxBcAdmin
             }
 
         }
-        public void SaveConfig()
+        public bool SaveConfig()
         {
             List<ConfigItem> ChangedList = ConfigList.Where(item => item.IsChanged).ToList();
-            if (ChangedList.Count > 0)
+            if (ChangedList.Count <= 0)
             {
                 App.Log($"{InstanceName}: Nothing changed.");
-                return;
+                return false;
             }
 
-            if (Command == null)
+            XmlDocument Doc = new XmlDocument();
+            Doc.Load(ConfigFilePath);
+            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
+
+            foreach (ConfigItem CI in ChangedList)
             {
-                Command = new PsCommand(this);
+                foreach (XmlNode Node in AppSettingsNode)
+                {
+                    if (Node.NodeType == XmlNodeType.Element)
+                    {
+                        XmlElement Element = Node as XmlElement; //CI.Key
+
+                        XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
+
+                        if (Attr != null && Attr.Value == CI.Key)
+                        {
+                            Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
+                            if (Attr != null)
+                            {
+                                Attr.Value = CI.Value;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
-            Command.SaveChanges(ChangedList);
+            Doc.Save(ConfigFilePath);
+
+            return true;
 
         }
-        public DataTable GetConfigTable()
+        static public void Save(string FilePath, List<ConfigItem> ChangeList)
         {
-            DataTable Table = new DataTable();
 
-            Table.Columns.Add("Category");
-            Table.Columns.Add("Name");
-            Table.Columns.Add("Value");
-            Table.Columns.Add("OBJECT", typeof(ConfigItem));
 
-            foreach (ConfigItemInfo CIInfo in ConfigItemInfo.List)
-            {
-                ConfigItem CI = ConfigList.FirstOrDefault(x => x.Key == CIInfo.Key);
-                if (CI != null)
-                {
-                    CI.Category = CIInfo.Category;
-                    CI.Name = CIInfo.Name;
-
-                    DataRow Row = Table.AddNewRow();
-                    Row["Category"] = CI.Category;
-                    Row["Name"] = CI.Name;
-                    Row["Value"] = CI.Value;
-                    Row["OBJECT"] = CI;
-                }
-            }
-
-            foreach (ConfigItem CI in ConfigList)
-            {
-                if (CI.Category == "Miscs")
-                {
-                    DataRow Row = Table.AddNewRow();
-                    Row["Category"] = CI.Category;
-                    Row["Name"] = CI.Name;
-                    Row["Value"] = CI.Value;
-                    Row["OBJECT"] = CI;
-                }
-            }
-
-            return Table;
         }
 
         /* properties */
