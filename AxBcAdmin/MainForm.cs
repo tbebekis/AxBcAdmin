@@ -262,7 +262,11 @@ namespace AxBcAdmin
                 }
 
                 if (TempList.Count > 0)
+                {
+                    TempList = TempList.OrderBy(item => item.Name).ToList();
                     AddTabPage("Miscs", TempList);
+                }
+                    
  
             }
         }
