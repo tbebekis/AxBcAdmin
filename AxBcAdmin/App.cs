@@ -51,41 +51,8 @@ namespace AxBcAdmin
             Table.Rows.Add(Result);
             return Result;
         }
-        /// <summary>
-        /// Gets the full path of the Assembly
-        /// </summary>
-        static public string GetFullPath(this Assembly A)
-        {
-            return A == null ? string.Empty : A.Location;
-
-            /* 
-			if (A == null)
-                return string.Empty;
-
-			string sFile = @"file:///";
-            string Result = A.GetName().CodeBase;
-            if (Result.StartsWith(sFile))
-                Result = Result.Substring(sFile.Length);
-
-            return Path.GetFullPath(Result);
-			 */
-
-        }
-        /// <summary>
-        /// Gets the directory where the Assembly resides.
-        /// <para>The returned string includes a trailing path separator.</para>
-        /// </summary>
-        static public string GetFolder(this Assembly A)
-        {
-            if (A == null)
-                return string.Empty;
-
-            string Result = Path.GetDirectoryName(GetFullPath(A: A));
-
-            if (!Result.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                Result = Result + Path.DirectorySeparatorChar;
-            return Result;
-        }
+ 
+        
         /// <summary>
         /// Creates and returns a file name based on DT
         /// <para>The returned string has the format </para>
@@ -111,7 +78,7 @@ namespace AxBcAdmin
         /// Gets the directory where the main assembly resides.
         /// <para>The returned string includes a trailing path separator.</para>
         /// </summary>
-        static public string AppFolder { get { return typeof(App).Assembly.GetFolder(); } }
-        // static public ServiceConfigDialog ConfigDialog { get; set; }
+        //static public string AppFolder { get { return System.AppContext.BaseDirectory; } }  //  { get { return typeof(App).Assembly.GetFolder(); } }
+ 
     }
 }
