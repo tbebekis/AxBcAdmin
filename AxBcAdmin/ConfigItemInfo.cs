@@ -271,6 +271,7 @@ namespace AxBcAdmin
 
         };
 
+        /* construction */
         public ConfigItemInfo() { }
         public ConfigItemInfo(string Category, string Name, string Key)
         {
@@ -279,6 +280,7 @@ namespace AxBcAdmin
             this.Key = Key;
         }
 
+        /* properties */
         public string Category { get; set; }
         public string Name { get; set; }
         public string Key { get; set; }

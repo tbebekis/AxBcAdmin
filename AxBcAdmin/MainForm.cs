@@ -19,6 +19,11 @@ namespace AxBcAdmin
             {
                 this.Close();
             }
+            else if (btnAboutDialog == sender)
+            {
+                using (AboutDialog F = new AboutDialog())
+                    F.ShowDialog();
+            }
             else if (btnStartService == sender)
             {
                 StartService();
@@ -58,12 +63,12 @@ namespace AxBcAdmin
             this.Text = STitle;
             lblServiceName.Text = "";
             lblServiceConfigFilePath.Text = "";
-            BcService SI = GetCurrentService();
-            if (SI != null)
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
             {
-                lblServiceName.Text = SI.InstanceName;
-                lblServiceConfigFilePath.Text = SI.ConfigFilePath;
-                this.Text = $"{STitle}: {SI.InstanceName}";
+                lblServiceName.Text = BCS.InstanceName;
+                lblServiceConfigFilePath.Text = BCS.ConfigFilePath;
+                this.Text = $"{STitle}: {BCS.InstanceName}";
             }
         }
         void fTimer_Tick(object sender, EventArgs e)
@@ -83,6 +88,7 @@ namespace AxBcAdmin
             lblServiceConfigFilePath.Text = "";
 
             btnExit.Click += AnyClick;
+            btnAboutDialog.Click += AnyClick;
             btnStartService.Click += AnyClick;
             btnRestartService.Click += AnyClick;
             btnStopService.Click += AnyClick;
@@ -116,14 +122,14 @@ namespace AxBcAdmin
         }
         void StartService()
         {
-            BcService SI = GetCurrentService();
-            if (SI == null)
+            BcService BCS = GetCurrentService();
+            if (BCS == null)
             {
                 Log("No Service selected");
                 return;
             }
 
-            if (SI.IsRunning)
+            if (BCS.IsRunning)
             {
                 Log("Service is already running.");
                 return;
@@ -131,15 +137,15 @@ namespace AxBcAdmin
             
             Application.DoEvents();
 
-            SI.Start();
+            BCS.Start();
 
-            if (SI.Status == ServiceControllerStatus.Running)
+            if (BCS.Status == ServiceControllerStatus.Running)
                LogEnd("DONE");
         }
         void RestartService()
         {
-            BcService SI = GetCurrentService();
-            if (SI == null)
+            BcService BCS = GetCurrentService();
+            if (BCS == null)
             {
                 Log("No Service selected");
                 return;
@@ -147,22 +153,22 @@ namespace AxBcAdmin
  
             Application.DoEvents();
 
-            SI.Restart();
+            BCS.Restart();
 
-            if (SI.Status == ServiceControllerStatus.Running)
+            if (BCS.Status == ServiceControllerStatus.Running)
                 LogEnd("DONE");
         }
         void StopService()
         {
-            BcService SI = GetCurrentService();
-            if (SI == null)
+            BcService BCS = GetCurrentService();
+            if (BCS == null)
             {
                 Log("No Service selected");
                 return;
             }
 
 
-            if (!SI.IsRunning)
+            if (!BCS.IsRunning)
             {
                 Log("Service is already stopped.");
                 return;
@@ -171,35 +177,39 @@ namespace AxBcAdmin
  
             Application.DoEvents();
 
-            SI.Stop();
+            BCS.Stop();
 
-            if (SI.Status == ServiceControllerStatus.Stopped)
+            if (BCS.Status == ServiceControllerStatus.Stopped)
                 LogEnd("DONE");
         }
         void ShowConfigText()
         {
-            BcService SI = GetCurrentService();
-            if (SI != null && File.Exists(SI.ConfigFilePath))
+            BcService BCS = GetCurrentService();
+            if (BCS != null && File.Exists(BCS.ConfigFilePath))
             {
                 // combine the arguments together
                 // it doesn't matter if there is a space after ','
-                string argument = "/select, \"" + SI.ConfigFilePath + "\"";
+                string argument = "/select, \"" + BCS.ConfigFilePath + "\"";
                 System.Diagnostics.Process.Start("explorer.exe", argument);
 
-                Process.Start("notepad.exe", SI.ConfigFilePath);
+                //Process.Start("notepad.exe", BCS.ConfigFilePath);
 
-                Log(SI.ConfigFilePath);
+                Log(BCS.ConfigFilePath);
             }
                 
         }
+        
         void ShowServiceConfig()
         {
+            // nested functions
+            // ----------------------------------------------------------
             List<ConfigItem> GetCategoryItems(string Category, List<ConfigItem> SourceList)
             {
                 List<ConfigItem> ResultList = SourceList.FindAll(x => x.Category == Category);
                 SourceList.RemoveAll(x => x.Category == Category);
                 return ResultList;
             }
+            // ----------------------------------------------------------
             void AddTabPage(string Category, List<ConfigItem>  ItemList)
             {
                 TabPage Page;
@@ -223,15 +233,18 @@ namespace AxBcAdmin
                     FlowPanel.Controls.Add(ConfigControl);
                 }
             }
+            // ----------------------------------------------------------
 
-            BcService SI = GetCurrentService();
-            if (SI != null)
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
             {
+                BCS.LoadConfig();
+
                 pnlServices.Visible = false;
                 pnlSettings.Visible = true;
 
                 List<ConfigItem> TempList = new List<ConfigItem>();
-                TempList.AddRange(SI.ConfigList.ToArray());
+                TempList.AddRange(BCS.ConfigList.ToArray());
 
                 string[] Categories = [
                     "General", 
@@ -270,20 +283,24 @@ namespace AxBcAdmin
  
             }
         }
-
         void CloseServiceConfig()
         {
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
+                BCS.ClearConfig();
+
             pnlSettings.Visible = false;
             pnlServices.Visible = true;
 
             Pager.TabPages.Clear();
         }
+
         void SaveServiceConfig()
         {
-            BcService SI = GetCurrentService();
-            if (SI != null)
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
             {
-                List<ConfigItem> ChangedList = SI.ConfigList.Where(item => item.IsChanged).ToList();
+                List<ConfigItem> ChangedList = BCS.ConfigList.Where(item => item.IsChanged).ToList();
                 if (ChangedList.Count <= 0)
                 {
                     Log("No changes, nothing to save.");
@@ -291,7 +308,7 @@ namespace AxBcAdmin
                 }
                 else
                 {
-                    SI.SaveConfig();
+                    BCS.SaveConfig();
                     Log("Config is saved");
 
                     Log("Restart the service for the changes to take effect");

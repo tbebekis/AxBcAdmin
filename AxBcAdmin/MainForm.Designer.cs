@@ -36,12 +36,14 @@
             pnlSettings = new Panel();
             Pager = new TabControl();
             toolStrip1 = new ToolStrip();
+            btnSaveServiceConfig = new ToolStripButton();
             btnCloseServiceConfig = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             pnlServices = new Panel();
             gridServices = new DataGridView();
-            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            coName = new DataGridViewTextBoxColumn();
             colStatus = new DataGridViewTextBoxColumn();
+            coConfigFilePath = new DataGridViewTextBoxColumn();
             ToolBar = new ToolStrip();
             btnStartService = new ToolStripButton();
             btnRestartService = new ToolStripButton();
@@ -52,7 +54,7 @@
             toolStripSeparator2 = new ToolStripSeparator();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
-            btnSaveServiceConfig = new ToolStripButton();
+            btnAboutDialog = new ToolStripButton();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -140,6 +142,15 @@
             toolStrip1.TabIndex = 4;
             toolStrip1.Text = "toolStrip1";
             // 
+            // btnSaveServiceConfig
+            // 
+            btnSaveServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnSaveServiceConfig.Image = Properties.Resources.table_save;
+            btnSaveServiceConfig.ImageTransparentColor = Color.Magenta;
+            btnSaveServiceConfig.Name = "btnSaveServiceConfig";
+            btnSaveServiceConfig.Size = new Size(28, 28);
+            btnSaveServiceConfig.Text = "Save Settings";
+            // 
             // btnCloseServiceConfig
             // 
             btnCloseServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -166,18 +177,18 @@
             // gridServices
             // 
             gridServices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridServices.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, colStatus });
+            gridServices.Columns.AddRange(new DataGridViewColumn[] { coName, colStatus, coConfigFilePath });
             gridServices.Dock = DockStyle.Fill;
             gridServices.Location = new Point(0, 31);
             gridServices.Name = "gridServices";
             gridServices.Size = new Size(253, 492);
             gridServices.TabIndex = 3;
             // 
-            // dataGridViewTextBoxColumn1
+            // coName
             // 
-            dataGridViewTextBoxColumn1.DataPropertyName = "InstanceName";
-            dataGridViewTextBoxColumn1.HeaderText = "Name";
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            coName.DataPropertyName = "InstanceName";
+            coName.HeaderText = "Name";
+            coName.Name = "coName";
             // 
             // colStatus
             // 
@@ -185,10 +196,16 @@
             colStatus.HeaderText = "Status";
             colStatus.Name = "colStatus";
             // 
+            // coConfigFilePath
+            // 
+            coConfigFilePath.DataPropertyName = "ConfigFilePath";
+            coConfigFilePath.HeaderText = "Config File Path";
+            coConfigFilePath.Name = "coConfigFilePath";
+            // 
             // ToolBar
             // 
             ToolBar.ImageScalingSize = new Size(24, 24);
-            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, toolStripSeparator1, btnShowConfigText, btnShowServiceConfig, toolStripSeparator2, btnExit });
+            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, toolStripSeparator1, btnShowConfigText, btnShowServiceConfig, toolStripSeparator2, btnAboutDialog, btnExit });
             ToolBar.Location = new Point(0, 0);
             ToolBar.Name = "ToolBar";
             ToolBar.Size = new Size(253, 31);
@@ -271,14 +288,14 @@
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
-            // btnSaveServiceConfig
+            // btnAboutDialog
             // 
-            btnSaveServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnSaveServiceConfig.Image = Properties.Resources.table_save;
-            btnSaveServiceConfig.ImageTransparentColor = Color.Magenta;
-            btnSaveServiceConfig.Name = "btnSaveServiceConfig";
-            btnSaveServiceConfig.Size = new Size(28, 28);
-            btnSaveServiceConfig.Text = "Save Settings";
+            btnAboutDialog.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnAboutDialog.Image = Properties.Resources.information;
+            btnAboutDialog.ImageTransparentColor = Color.Magenta;
+            btnAboutDialog.Name = "btnAboutDialog";
+            btnAboutDialog.Size = new Size(28, 28);
+            btnAboutDialog.Text = "About";
             // 
             // MainForm
             // 
@@ -332,9 +349,11 @@
         private ToolStripButton btnCloseServiceConfig;
         private ToolStripSeparator toolStripSeparator3;
         private TabControl Pager;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn colStatus;
         private ToolStripButton btnShowConfigText;
         private ToolStripButton btnSaveServiceConfig;
+        private DataGridViewTextBoxColumn coName;
+        private DataGridViewTextBoxColumn colStatus;
+        private DataGridViewTextBoxColumn coConfigFilePath;
+        private ToolStripButton btnAboutDialog;
     }
 }

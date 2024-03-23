@@ -13,7 +13,6 @@ namespace AxBcAdmin
         /* private */
         static readonly string ServicePrefix = "Microsoft Dynamics 365 Business Central Server";
         static List<BcService> fServices;
-
         ServiceController Service;
         PsCommand Command;
 
@@ -41,34 +40,7 @@ namespace AxBcAdmin
 
             return false;
         }
-        List<ConfigItem> LoadConfig(string FilePath)
-        {
-            List<ConfigItem> List = new List<ConfigItem>();
-
-            XmlDocument Doc = new XmlDocument();
-            Doc.Load(FilePath);
-            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
-
-            ConfigItem Item;
-            XmlComment Comment = null;
-            foreach (XmlNode Node in AppSettingsNode)
-            {
-                if (Node.NodeType == XmlNodeType.Comment)
-                {
-                    Comment = Node as XmlComment;
-                }
-                else if (Node.NodeType == XmlNodeType.Element)
-                {
-                    Item = new ConfigItem(Node as XmlElement, Comment);
-                    List.Add(Item);
-
-                    Comment = null;
-                }
-            }
-
-            return List;
-        }
-
+ 
 
         /* construction */
         public BcService(ServiceController Service)
@@ -103,8 +75,6 @@ namespace AxBcAdmin
                         App.Throw($"Settings File {S} not found");
 
                     ConfigFilePath = S;
-
-                    ConfigList = LoadConfig(ConfigFilePath);
                 }
             }
         }
@@ -193,6 +163,36 @@ namespace AxBcAdmin
             }
         }
 
+        public void ClearConfig()
+        {
+            ConfigList.Clear();
+        }
+        public void LoadConfig()
+        {
+            ConfigList.Clear();
+
+            XmlDocument Doc = new XmlDocument();
+            Doc.Load(ConfigFilePath);
+            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
+
+            ConfigItem Item;
+            XmlComment Comment = null;
+            foreach (XmlNode Node in AppSettingsNode)
+            {
+                if (Node.NodeType == XmlNodeType.Comment)
+                {
+                    Comment = Node as XmlComment;
+                }
+                else if (Node.NodeType == XmlNodeType.Element)
+                {
+                    Item = new ConfigItem(Node as XmlElement, Comment);
+                    ConfigList.Add(Item);
+
+                    Comment = null;
+                }
+            }
+
+        }
         public void SaveConfig()
         {
             List<ConfigItem> ChangedList = ConfigList.Where(item => item.IsChanged).ToList();
@@ -278,12 +278,12 @@ namespace AxBcAdmin
         }
         public ServiceControllerStatus Status { get { return Service.Status; } }
         public string StatusText { get { return Service.Status.ToString(); } } 
-        public string DisplayName { get; }      // e.g. Microsoft Dynamics 365 Business Central Server [BC230]
-        public string ServiceName { get; }      // e.g. ??
-        public string InstanceName { get; }     // e.g. BC230
-        public string ServiceFolder { get; }    // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\
-        public string ConfigFilePath { get; }   // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config
-        public List<ConfigItem> ConfigList { get; }
+        public string DisplayName { get; private set; }      // e.g. Microsoft Dynamics 365 Business Central Server [BC230]
+        public string ServiceName { get; private set; }      // e.g. ??
+        public string InstanceName { get; private set; }     // e.g. BC230
+        public string ServiceFolder { get; private set; }    // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\
+        public string ConfigFilePath { get; private set; }   // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config
+        public List<ConfigItem> ConfigList { get; } = new List<ConfigItem>();
         public bool IsRunning { get { return Service.Status == ServiceControllerStatus.Running || Service.Status == ServiceControllerStatus.StartPending; } }
  
 

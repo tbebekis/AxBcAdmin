@@ -12,19 +12,20 @@ namespace AxBcAdmin
 {
     internal class PsCommand
     {
+        /* private */
         const string CommandName = "Set-NAVServerConfiguration";
-        BcService Service;
+        BcService BCS;
         InitialSessionState SessionState;
         SessionStateVariableEntry SessionStateEntry;
         //ModuleSpecification Module;
         string AdminModulePath;             // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\NavAdminTool.ps1
 
- 
 
-        public PsCommand(BcService Service) 
+        /* construction */
+        public PsCommand(BcService BCS) 
         { 
-            this.Service = Service;
-            AdminModulePath = Path.Combine(Service.ServiceFolder, "NavAdminTool.ps1");   
+            this.BCS = BCS;
+            AdminModulePath = Path.Combine(BCS.ServiceFolder, "NavAdminTool.ps1");   
 
             SessionState = InitialSessionState.Create(); 
             SessionState.ImportPSModulesFromPath(AdminModulePath);
@@ -33,6 +34,7 @@ namespace AxBcAdmin
             SessionState.Variables.Add(SessionStateEntry);
         }
 
+        /* public */
         public void SaveChanges(List<ConfigItem> ChangedList)
         {
             Collection<PSObject> InvokeResult;
@@ -44,14 +46,14 @@ namespace AxBcAdmin
                     try
                     {
                         PS.AddCommand(CommandName); // Set-NAVServerConfiguration
-                        PS.AddParameter("-ServerInstance", Service.InstanceName);
+                        PS.AddParameter("-ServerInstance", BCS.InstanceName);
                         PS.AddParameter("-KeyName", Item.Key);
                         PS.AddParameter("-KeyValue", Item.Value);
                         InvokeResult = PS.Invoke();
                     }
                     catch (Exception ex)
                     {
-                        App.Log($"{Service.InstanceName}: Error on saving. Key = {Item.Key}, Value = {Item.Value}");
+                        App.Log($"{BCS.InstanceName}: Error on saving. Key = {Item.Key}, Value = {Item.Value}");
                         App.Log($"ERROR: {ex.Message}");
                     }
                 }

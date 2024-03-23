@@ -5,6 +5,7 @@ namespace AxBcAdmin
 {
     internal class ConfigItem
     {
+        /* construction */
         public ConfigItem(XmlElement Element, XmlComment Comment)
         {
             Category = "Miscs";
@@ -55,11 +56,13 @@ namespace AxBcAdmin
  
         }
 
+        /* public */
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(Key) ? Key : base.ToString();
         }
 
+        /* properties */
         public string Category { get; set; }
         public string Name { get; set; }
         public string Key { get; set; }
