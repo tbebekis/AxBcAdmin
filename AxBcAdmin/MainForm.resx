@@ -123,26 +123,6 @@
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="richTextBox1.Text" xml:space="preserve">
-    <value>Business Central Server configuration settings are stored in a file called CustomeSettings.config.
-
-The default location of the CustomSettings.config file is 
-     	C:\Program Files\Microsoft Dynamics 365 Business Central\BC_VERSION\Service.
-
-The CustomeSettings.config is an XML file with multiple entries like
-	&lt;add key="ServerInstance" value="BC230" /&gt;
-where "key" is predefined.
-
-Configuration keys are described in the following link
-	https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/configure-server-instance
-
-The administrator may use the Set-NAVServerConfiguration PowerShell cmdlet to edit these configuration settings.
-	Set-NAVServerConfiguration -ServerInstance "BC230" -KeyName ServerInstance -KeyValue "BC230_Prod"
-
-Microsoft has retired the Business Central Admin application in the latest BC versions. 
-
-This application can be used with any Business Central version and it aims to make it easy to manage the Business Central Server configuration.</value>
-  </data>
   <metadata name="coName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

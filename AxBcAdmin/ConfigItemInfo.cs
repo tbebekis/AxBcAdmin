@@ -4,6 +4,7 @@
     {
         static public List<string> ExcludeSettings = new List<string>() {
              "ProtectedDatabasePassword"
+            ,"DatabaseUserName"
             ,""
         };
 

@@ -186,7 +186,8 @@
                 else if (Node.NodeType == XmlNodeType.Element)
                 {
                     Item = new ConfigItem(Node as XmlElement, Comment);
-                    ConfigList.Add(Item);
+                    if (!ConfigItemInfo.ExcludeSettings.Any(item => string.Equals(item, Item.Key, StringComparison.OrdinalIgnoreCase)))
+                       ConfigList.Add(Item);
 
                     Comment = null;
                 }

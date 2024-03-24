@@ -5,6 +5,27 @@ namespace AxBcAdmin
     {
         /* private */
         const string STitle = "AntyxSoft Business Central Admin";
+        const string SInfo = @"
+Business Central Server configuration settings are stored in a file called CustomSettings.config.
+
+The default location of the CustomSettings.config file is 
+     	C:\Program Files\Microsoft Dynamics 365 Business Central\BC_VERSION\Service.
+
+The CustomeSettings.config is an XML file with multiple entries like
+	<add key=""ServerInstance"" value=""BC230"" />
+where ""key"" is predefined.
+
+Configuration keys are described in the following link
+	https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/configure-server-instance
+
+The administrator may use the Set-NAVServerConfiguration PowerShell cmdlet to edit these configuration settings.
+	Set-NAVServerConfiguration -ServerInstance ""BC230"" -KeyName ServerInstance -KeyValue ""BC230_Prod""
+
+Microsoft has retired the Business Central Admin application in the latest BC versions. 
+
+This application can be used with any Business Central version and it aims to make it easy to manage the Business Central Server configuration.
+------------------------------------------------------------------------------
+";
 
         System.Windows.Forms.Timer fTimer;
         BindingSource bsServices;
@@ -117,6 +138,8 @@ namespace AxBcAdmin
             fTimer.Tick += fTimer_Tick;
             fTimer.Interval = 1000 * 5;
             fTimer.Enabled = true;
+
+            Log(SInfo);
         }
  
         BcService GetCurrentService()

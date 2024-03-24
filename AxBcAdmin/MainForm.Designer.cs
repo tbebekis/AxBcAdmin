@@ -42,7 +42,6 @@
             btnCloseServiceConfig = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             pnlServices = new Panel();
-            richTextBox1 = new RichTextBox();
             gridServices = new DataGridView();
             coName = new DataGridViewTextBoxColumn();
             colStatus = new DataGridViewTextBoxColumn();
@@ -114,7 +113,7 @@
             // 
             Splitter.Panel2.Controls.Add(edtLog);
             Splitter.Size = new Size(978, 684);
-            Splitter.SplitterDistance = 617;
+            Splitter.SplitterDistance = 587;
             Splitter.SplitterWidth = 6;
             Splitter.TabIndex = 2;
             // 
@@ -180,22 +179,12 @@
             // 
             // pnlServices
             // 
-            pnlServices.Controls.Add(richTextBox1);
             pnlServices.Controls.Add(gridServices);
             pnlServices.Controls.Add(ToolBar);
             pnlServices.Location = new Point(12, 12);
             pnlServices.Name = "pnlServices";
             pnlServices.Size = new Size(498, 523);
             pnlServices.TabIndex = 1;
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.Dock = DockStyle.Bottom;
-            richTextBox1.Location = new Point(0, 247);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(498, 276);
-            richTextBox1.TabIndex = 4;
-            richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // gridServices
             // 
@@ -325,7 +314,7 @@
             edtLog.Location = new Point(0, 0);
             edtLog.Name = "edtLog";
             edtLog.ReadOnly = true;
-            edtLog.Size = new Size(978, 61);
+            edtLog.Size = new Size(978, 91);
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
@@ -388,7 +377,6 @@
         private DataGridViewTextBoxColumn colStatus;
         private DataGridViewTextBoxColumn coConfigFilePath;
         private ToolStripButton btnAboutDialog;
-        private RichTextBox richTextBox1;
         private ToolStripButton btnClearLog;
         private ToolStripButton btnClearLog2;
     }
