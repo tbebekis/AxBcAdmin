@@ -1,6 +1,4 @@
-﻿ 
-
-namespace AxBcAdmin
+﻿namespace AxBcAdmin
 {
     public partial class AboutDialog : Form
     {

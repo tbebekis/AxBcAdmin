@@ -8,3 +8,4 @@ global using System.Windows.Forms;
 global using System.Xml;
 global using System.Reflection;
 global using System.Diagnostics;
+global using System.Text.RegularExpressions;

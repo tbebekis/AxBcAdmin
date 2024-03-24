@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AxBcAdmin
+﻿namespace AxBcAdmin
 {
     internal class BcService
     {
@@ -40,7 +32,15 @@ namespace AxBcAdmin
 
             return false;
         }
- 
+        void BackupConfigFile()
+        {
+            string BackupFolder = Path.Combine(App.AppFolder, "Backup");
+            Directory.CreateDirectory(BackupFolder);
+            string FileName = "CustomSettings Backup " + DateTime.Now.ToFileName() + ".XML";
+            LastBackupFilePath = Path.Combine(BackupFolder, FileName);
+
+            File.Copy(ConfigFilePath, LastBackupFilePath, true);
+        }
 
         /* construction */
         public BcService(ServiceController Service)
@@ -229,17 +229,13 @@ namespace AxBcAdmin
                 }
             }
 
+            BackupConfigFile();
             Doc.Save(ConfigFilePath);
 
             return true;
 
         }
-        static public void Save(string FilePath, List<ConfigItem> ChangeList)
-        {
-
-
-        }
-
+ 
         /* properties */
         static public List<BcService> Services
         {
@@ -275,7 +271,7 @@ namespace AxBcAdmin
         public string ConfigFilePath { get; private set; }   // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config
         public List<ConfigItem> ConfigList { get; } = new List<ConfigItem>();
         public bool IsRunning { get { return Service.Status == ServiceControllerStatus.Running || Service.Status == ServiceControllerStatus.StartPending; } }
- 
+        public string LastBackupFilePath { get; private set; }
 
     }
 }

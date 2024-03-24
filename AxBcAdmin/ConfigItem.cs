@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Xml;
-
-namespace AxBcAdmin
+﻿namespace AxBcAdmin
 {
     internal class ConfigItem
     {

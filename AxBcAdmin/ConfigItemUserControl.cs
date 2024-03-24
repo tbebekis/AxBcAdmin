@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace AxBcAdmin
 {
     public partial class ConfigItemUserControl : UserControl
@@ -58,13 +57,10 @@ namespace AxBcAdmin
 
         void lblKey_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show(ConfigItem.CommentText);
-
-            App.Log("----------------------------------------------"); // + Environment.NewLine
+            App.Log("----------------------------------------------"); 
             App.Log(ConfigItem.Name);
             App.Log(ConfigItem.CommentText);
         }
 
- 
     }
 }

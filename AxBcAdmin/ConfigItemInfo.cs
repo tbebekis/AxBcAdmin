@@ -1,8 +1,5 @@
-﻿ 
-
-namespace AxBcAdmin
+﻿namespace AxBcAdmin
 {
-
     internal class ConfigItemInfo
     {
         static public List<string> ExcludeSettings = new List<string>() {

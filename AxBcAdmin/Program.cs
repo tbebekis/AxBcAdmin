@@ -1,9 +1,7 @@
 namespace AxBcAdmin
 {
     internal static class Program
-    {
- 
-
+    { 
         static MainForm MainForm = null;
         static void DisplayError(Exception e)
         {
@@ -16,9 +14,7 @@ namespace AxBcAdmin
                 MessageBox.Show(e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
+ 
         /* private */
         /// <summary>
         /// this is of a little use because it actually is a notification about an exception, NOT a catcher. 
@@ -51,7 +47,6 @@ namespace AxBcAdmin
             }
         }
 
-
         /* construction */
         /// <summary>
         /// Static constructor. Setups unhandled exception event handlers.
@@ -62,8 +57,6 @@ namespace AxBcAdmin
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
-
-
 
         /// <summary>
         ///  The main entry point for the application.

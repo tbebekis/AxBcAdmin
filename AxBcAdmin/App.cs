@@ -1,6 +1,4 @@
-﻿ 
-
-namespace AxBcAdmin
+﻿namespace AxBcAdmin
 {
     static internal class App
     {
@@ -78,7 +76,7 @@ namespace AxBcAdmin
         /// Gets the directory where the main assembly resides.
         /// <para>The returned string includes a trailing path separator.</para>
         /// </summary>
-        //static public string AppFolder { get { return System.AppContext.BaseDirectory; } }  //  { get { return typeof(App).Assembly.GetFolder(); } }
+        static public string AppFolder { get { return System.AppContext.BaseDirectory; } }  //  { get { return typeof(App).Assembly.GetFolder(); } }
  
     }
 }

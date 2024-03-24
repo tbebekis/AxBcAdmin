@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime;
-using System.Web.Services.Description;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
+ 
 namespace AxBcAdmin
 {
     public partial class MainForm : Form
     {
+        /* private */
         const string STitle = "AntyxSoft Business Central Admin";
 
         System.Windows.Forms.Timer fTimer;
@@ -24,6 +20,10 @@ namespace AxBcAdmin
                 using (AboutDialog F = new AboutDialog())
                     F.ShowDialog();
             }
+            else if (btnClearLog == sender || btnClearLog2 == sender)
+            {
+                edtLog.Clear();
+            }
             else if (btnStartService == sender)
             {
                 StartService();
@@ -36,9 +36,9 @@ namespace AxBcAdmin
             {
                 StopService();
             }
-            else if (btnShowConfigText == sender)
+            else if (btnShowConfigFile == sender)
             {
-                ShowConfigText();
+                ShowConfigFile();
             }
             else if (btnShowServiceConfig == sender)
             {
@@ -92,11 +92,14 @@ namespace AxBcAdmin
             btnStartService.Click += AnyClick;
             btnRestartService.Click += AnyClick;
             btnStopService.Click += AnyClick;
-            btnShowConfigText.Click += AnyClick;
+            btnShowConfigFile.Click += AnyClick;
             btnShowServiceConfig.Click += AnyClick;
 
             btnCloseServiceConfig.Click += AnyClick;
             btnSaveServiceConfig.Click += AnyClick;
+
+            btnClearLog.Click += AnyClick;
+            btnClearLog2.Click += AnyClick;
 
             bsServices.PositionChanged += bsServices_PositionChanged;
             gridServices.MouseDoubleClick += gridServices_MouseDoubleClick;
@@ -182,7 +185,7 @@ namespace AxBcAdmin
             if (BCS.Status == ServiceControllerStatus.Stopped)
                 LogEnd("DONE");
         }
-        void ShowConfigText()
+        void ShowConfigFile()
         {
             BcService BCS = GetCurrentService();
             if (BCS != null && File.Exists(BCS.ConfigFilePath))
@@ -238,6 +241,8 @@ namespace AxBcAdmin
             BcService BCS = GetCurrentService();
             if (BCS != null)
             {
+                Log("Click on any label to see the description of the associated Key and its possible Values.");
+
                 BCS.LoadConfig();
 
                 pnlServices.Visible = false;
@@ -294,7 +299,6 @@ namespace AxBcAdmin
 
             Pager.TabPages.Clear();
         }
-
         void SaveServiceConfig()
         {
             BcService BCS = GetCurrentService();
@@ -314,6 +318,8 @@ namespace AxBcAdmin
 
                         Log("Restart the service for the changes to take effect");
                         MessageBox.Show("Restart the service for the changes to take effect");
+
+                        Log($"A backup of the CustomSettings.config file is saved at \n {BCS.LastBackupFilePath}");
                     }
                 }
             }
@@ -324,6 +330,8 @@ namespace AxBcAdmin
             edtLog.SelectionStart = edtLog.Text.Length;
             edtLog.ScrollToCaret();
         }
+
+        /* public */
         public void Log(string LogText)
         {
             if (!InvokeRequired)
@@ -355,7 +363,7 @@ namespace AxBcAdmin
             ScrollToEnd();
         }
 
-
+        /* overrides */
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
@@ -363,6 +371,7 @@ namespace AxBcAdmin
                 FormInitialize();
         }
 
+        /* construction */
         public MainForm()
         {
             InitializeComponent();

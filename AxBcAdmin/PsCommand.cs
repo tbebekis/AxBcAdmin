@@ -1,4 +1,18 @@
-﻿using Microsoft.PowerShell.Commands;
+﻿
+
+namespace AxBcAdmin
+{
+
+    // NOTE: I tried to do it "by the book"
+    // but I found no way to make ImportPSModulesFromPath() to work
+    // so the last resort is to use the XmlDoc
+
+
+
+    /*
+    
+
+using Microsoft.PowerShell.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,13 +22,6 @@ using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AxBcAdmin
-{
-
-    // NOTE: I tried to do it "by the book"
-    // but I found no way to make ImportPSModulesFromPath() to work
-    // so the last resort is to use the XmlDoc
-    /*
     internal class PsCommand
     {
  
