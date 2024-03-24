@@ -139,7 +139,9 @@ Configuration keys are described in the following link
 The administrator may use the Set-NAVServerConfiguration PowerShell cmdlet to edit these configuration settings.
 	Set-NAVServerConfiguration -ServerInstance "BC230" -KeyName ServerInstance -KeyValue "BC230_Prod"
 
-Microsoft has retired the Business Central Admin application in the latest BC versions. This application aims to make it easy to manage the Business Central Server configuration.</value>
+Microsoft has retired the Business Central Admin application in the latest BC versions. 
+
+This application can be used with any Business Central version and it aims to make it easy to manage the Business Central Server configuration.</value>
   </data>
   <metadata name="coName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

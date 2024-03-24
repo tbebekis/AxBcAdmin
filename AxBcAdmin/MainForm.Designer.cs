@@ -38,6 +38,7 @@
             Pager = new TabControl();
             toolStrip1 = new ToolStrip();
             btnSaveServiceConfig = new ToolStripButton();
+            btnClearLog2 = new ToolStripButton();
             btnCloseServiceConfig = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             pnlServices = new Panel();
@@ -54,11 +55,10 @@
             btnShowConfigFile = new ToolStripButton();
             btnShowServiceConfig = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            btnClearLog = new ToolStripButton();
             btnAboutDialog = new ToolStripButton();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
-            btnClearLog = new ToolStripButton();
-            btnClearLog2 = new ToolStripButton();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -155,6 +155,15 @@
             btnSaveServiceConfig.Size = new Size(28, 28);
             btnSaveServiceConfig.Text = "Save Settings";
             // 
+            // btnClearLog2
+            // 
+            btnClearLog2.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnClearLog2.Image = Properties.Resources.bin_empty;
+            btnClearLog2.ImageTransparentColor = Color.Magenta;
+            btnClearLog2.Name = "btnClearLog2";
+            btnClearLog2.Size = new Size(28, 28);
+            btnClearLog2.Text = "Clear Log";
+            // 
             // btnCloseServiceConfig
             // 
             btnCloseServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -182,9 +191,9 @@
             // richTextBox1
             // 
             richTextBox1.Dock = DockStyle.Bottom;
-            richTextBox1.Location = new Point(0, 263);
+            richTextBox1.Location = new Point(0, 247);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(498, 260);
+            richTextBox1.Size = new Size(498, 276);
             richTextBox1.TabIndex = 4;
             richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
@@ -281,6 +290,15 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 31);
             // 
+            // btnClearLog
+            // 
+            btnClearLog.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnClearLog.Image = Properties.Resources.bin_empty;
+            btnClearLog.ImageTransparentColor = Color.Magenta;
+            btnClearLog.Name = "btnClearLog";
+            btnClearLog.Size = new Size(28, 28);
+            btnClearLog.Text = "Clear Log";
+            // 
             // btnAboutDialog
             // 
             btnAboutDialog.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -310,24 +328,6 @@
             edtLog.Size = new Size(978, 61);
             edtLog.TabIndex = 3;
             edtLog.Text = "";
-            // 
-            // btnClearLog
-            // 
-            btnClearLog.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnClearLog.Image = Properties.Resources.bin_empty;
-            btnClearLog.ImageTransparentColor = Color.Magenta;
-            btnClearLog.Name = "btnClearLog";
-            btnClearLog.Size = new Size(28, 28);
-            btnClearLog.Text = "Clear Log";
-            // 
-            // btnClearLog2
-            // 
-            btnClearLog2.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnClearLog2.Image = Properties.Resources.bin_empty;
-            btnClearLog2.ImageTransparentColor = Color.Magenta;
-            btnClearLog2.Name = "btnClearLog2";
-            btnClearLog2.Size = new Size(28, 28);
-            btnClearLog2.Text = "Clear Log";
             // 
             // MainForm
             // 
