@@ -325,6 +325,10 @@
                             BcService Item = new BcService(Service);
                             fServices.Add(Item);
                         }
+                        else
+                        {
+                            Service.Dispose();
+                        }
                     }
                 }
 

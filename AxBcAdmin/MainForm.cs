@@ -21,7 +21,7 @@ Configuration keys are described in the following link
 The administrator may use the Set-NAVServerConfiguration PowerShell cmdlet to edit these configuration settings.
 	Set-NAVServerConfiguration -ServerInstance ""BC230"" -KeyName ServerInstance -KeyValue ""BC230_Prod""
 
-Microsoft has retired the Business Central Admin application in the latest BC versions. 
+Microsoft has retired the Business Central Admin application in the BC 2022 Release Wave 2 (v21) on-premises version. A non polite action.
 
 This application can be used with any Business Central version and it aims to make it easy to manage the Business Central Server configuration.
 ------------------------------------------------------------------------------
@@ -30,6 +30,7 @@ This application can be used with any Business Central version and it aims to ma
         System.Windows.Forms.Timer fTimer;
         BindingSource bsServices;
 
+        /* events */
         void AnyClick(object sender, EventArgs e)
         {
             if (btnExit == sender)
@@ -56,6 +57,10 @@ This application can be used with any Business Central version and it aims to ma
             else if (btnStopService == sender)
             {
                 StopService();
+            }
+            else if (btnRefreshStatus == sender)
+            {
+                RefreshStatus();
             }
             else if (btnShowConfigFile == sender)
             {
@@ -102,9 +107,10 @@ This application can be used with any Business Central version and it aims to ma
         }
         void fTimer_Tick(object sender, EventArgs e)
         {
-            bsServices.ResetBindings(false);
+            RefreshStatus();
         }
 
+        /* private */
         void FormInitialize()
         {
             App.MainForm = this;
@@ -123,6 +129,7 @@ This application can be used with any Business Central version and it aims to ma
             btnStopService.Click += AnyClick;
             btnShowConfigFile.Click += AnyClick;
             btnShowServiceConfig.Click += AnyClick;
+            btnRefreshStatus.Click += AnyClick;
 
             btnCloseServiceConfig.Click += AnyClick;
             btnSaveServiceConfig.Click += AnyClick;
@@ -175,6 +182,7 @@ This application can be used with any Business Central version and it aims to ma
             Application.DoEvents();
 
             BCS.Start();
+            RefreshStatus();
 
             if (BCS.Status == ServiceControllerStatus.Running)
                LogEnd("DONE");
@@ -191,6 +199,7 @@ This application can be used with any Business Central version and it aims to ma
             Application.DoEvents();
 
             BCS.Restart();
+            RefreshStatus();
 
             if (BCS.Status == ServiceControllerStatus.Running)
                 LogEnd("DONE");
@@ -215,9 +224,15 @@ This application can be used with any Business Central version and it aims to ma
             Application.DoEvents();
 
             BCS.Stop();
+            RefreshStatus();
 
             if (BCS.Status == ServiceControllerStatus.Stopped)
                 LogEnd("DONE");
+        }
+
+        void RefreshStatus()
+        {
+            bsServices.ResetBindings(true);
         }
         void ShowConfigFile()
         {
@@ -407,7 +422,6 @@ This application can be used with any Business Central version and it aims to ma
                 }));
             }
         }
-
         public void LogStart(string LogText)
         {
             edtLog.AppendText(LogText);
