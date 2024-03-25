@@ -58,6 +58,8 @@
             btnAboutDialog = new ToolStripButton();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
+            btnClearDatabaseCredentials = new ToolStripButton();
+            btnSetDatabaseCredentials = new ToolStripButton();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -138,7 +140,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(24, 24);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnClearLog2, btnCloseServiceConfig, toolStripSeparator3 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnClearDatabaseCredentials, btnSetDatabaseCredentials, btnClearLog2, btnCloseServiceConfig, toolStripSeparator3 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(593, 31);
@@ -318,6 +320,24 @@
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
+            // btnClearDatabaseCredentials
+            // 
+            btnClearDatabaseCredentials.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnClearDatabaseCredentials.Image = Properties.Resources.user;
+            btnClearDatabaseCredentials.ImageTransparentColor = Color.Magenta;
+            btnClearDatabaseCredentials.Name = "btnClearDatabaseCredentials";
+            btnClearDatabaseCredentials.Size = new Size(28, 28);
+            btnClearDatabaseCredentials.Text = "Clear Database Credentials";
+            // 
+            // btnSetDatabaseCredentials
+            // 
+            btnSetDatabaseCredentials.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnSetDatabaseCredentials.Image = Properties.Resources.user_add;
+            btnSetDatabaseCredentials.ImageTransparentColor = Color.Magenta;
+            btnSetDatabaseCredentials.Name = "btnSetDatabaseCredentials";
+            btnSetDatabaseCredentials.Size = new Size(28, 28);
+            btnSetDatabaseCredentials.Text = "Set Database Credentials";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -379,5 +399,7 @@
         private ToolStripButton btnAboutDialog;
         private ToolStripButton btnClearLog;
         private ToolStripButton btnClearLog2;
+        private ToolStripButton btnClearDatabaseCredentials;
+        private ToolStripButton btnSetDatabaseCredentials;
     }
 }

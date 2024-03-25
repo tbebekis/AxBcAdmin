@@ -236,7 +236,76 @@
             return true;
 
         }
+        
+        public bool ClearDatabaseCredentials()
+        {
+            XmlDocument Doc = new XmlDocument();
+            Doc.Load(ConfigFilePath);
+            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
+
+            string[] DatabaseKeys = { "DatabaseUserName", "ProtectedDatabasePassword" };
+            int Count = 0; 
+
+
+            foreach (string Key in DatabaseKeys)
+            {
+                foreach (XmlNode Node in AppSettingsNode)
+                {
+                    if (Node.NodeType == XmlNodeType.Element)
+                    {
+                        XmlElement Element = Node as XmlElement; //CI.Key
+
+                        XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
+
+                        if (Attr != null && Attr.Value == Key)
+                        {
+                            Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
+                            if (Attr != null)
+                            {
+                                Attr.Value = "";
+                                Count++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            BackupConfigFile();
+            Doc.Save(ConfigFilePath);
+
+            return Count == DatabaseKeys.Length;
+        }
+        public void SetDatabaseCredentials()
+        {
+            BackupConfigFile();
+
+            string NavAdminToolFilePath = Path.Combine(ServiceFolder, "NavAdminTool.ps1"); 
  
+            ProcessStartInfo PSI = new ProcessStartInfo(); 
+            PSI.UseShellExecute = false;
+            PSI.FileName = "powershell.exe";
+            PSI.WindowStyle = ProcessWindowStyle.Normal;
+            PSI.RedirectStandardInput = true;
+
+            using (Process P = new Process())
+            {
+                P.StartInfo = PSI;
+                P.Start();
+
+                using (StreamWriter SW = P.StandardInput)
+                {
+                    if (SW.BaseStream.CanWrite)
+                    {
+                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
+                        SW.WriteLine($"Set-NAVServerConfiguration -ServerInstance {InstanceName} -DatabaseCredentials (Get-Credential)");
+                    }
+                }
+            }
+
+        }
+
+
         /* properties */
         static public List<BcService> Services
         {

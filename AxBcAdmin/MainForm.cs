@@ -73,6 +73,14 @@ This application can be used with any Business Central version and it aims to ma
             {
                 SaveServiceConfig();
             }
+            else if (btnClearDatabaseCredentials == sender)
+            {
+                ClearDatabaseCredentials();
+            }
+            else if (btnSetDatabaseCredentials == sender)
+            {
+                SetDatabaseCredentials();
+            }
         }
 
         void gridServices_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -118,6 +126,9 @@ This application can be used with any Business Central version and it aims to ma
 
             btnCloseServiceConfig.Click += AnyClick;
             btnSaveServiceConfig.Click += AnyClick;
+
+            btnClearDatabaseCredentials.Click += AnyClick;
+            btnSetDatabaseCredentials.Click += AnyClick;
 
             btnClearLog.Click += AnyClick;
             btnClearLog2.Click += AnyClick;
@@ -335,17 +346,42 @@ This application can be used with any Business Central version and it aims to ma
                 }
                 else
                 {
-                   if (BCS.SaveConfig())
-                    {
-                        Log("Config is saved");
-
-                        Log("Restart the service for the changes to take effect");
-                        MessageBox.Show("Restart the service for the changes to take effect");
-
-                        Log($"A backup of the CustomSettings.config file is saved at \n {BCS.LastBackupFilePath}");
-                    }
+                    if (BCS.SaveConfig())
+                        ShowRestartServerMessages(BCS);
                 }
             }
+        }
+        void ShowRestartServerMessages(BcService BCS)
+        {
+            Log("Config is saved");
+
+            Log("Restart the service for the changes to take effect");
+            MessageBox.Show("Restart the service for the changes to take effect");
+
+            Log($"A backup of the CustomSettings.config file is saved at \n {BCS.LastBackupFilePath}");
+        }
+
+        void ClearDatabaseCredentials()
+        {
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
+            {
+                if (MessageBox.Show("Clear Database Credentials?", "Question",  MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    if (BCS.ClearDatabaseCredentials())
+                        ShowRestartServerMessages(BCS);
+                }
+            }
+        }
+        void SetDatabaseCredentials()
+        {
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
+            {
+                BCS.SetDatabaseCredentials();
+                ShowRestartServerMessages(BCS);
+            }
+                
         }
 
         void ScrollToEnd()
