@@ -352,6 +352,7 @@
 
             }
         }
+        
         public ServiceControllerStatus Status { get { return Service.Status; } }
         public string StatusText { get { return Service.Status.ToString(); } } 
         public string DisplayName { get; private set; }      // e.g. Microsoft Dynamics 365 Business Central Server [BC230]
