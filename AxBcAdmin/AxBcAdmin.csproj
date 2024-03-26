@@ -6,6 +6,8 @@
 		<!-- <Nullable>enable</Nullable> -->
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<AssemblyVersion>24.3.26</AssemblyVersion>
+		<ProductVersion>24.3.26</ProductVersion>		
 		<ApplicationIcon>AppIco.ico</ApplicationIcon>
 	</PropertyGroup>
 

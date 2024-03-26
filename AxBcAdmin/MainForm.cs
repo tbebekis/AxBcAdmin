@@ -78,14 +78,11 @@ This application can be used with any Business Central version and it aims to ma
             {
                 SaveServiceConfig();
             }
-            else if (btnClearDatabaseCredentials == sender)
+            else if (btnDatabaseCredentialsDialog == sender)
             {
-                ClearDatabaseCredentials();
+                ShowDatabaseCredentialsDialog();
             }
-            else if (btnSetDatabaseCredentials == sender)
-            {
-                SetDatabaseCredentials();
-            }
+
         }
 
         void gridServices_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -115,8 +112,7 @@ This application can be used with any Business Central version and it aims to ma
         {
             App.MainForm = this;
 
-            bsServices = new BindingSource();
-  
+            bsServices = new BindingSource();  
 
             this.Text = STitle;
             lblServiceName.Text = "";
@@ -130,12 +126,10 @@ This application can be used with any Business Central version and it aims to ma
             btnShowConfigFile.Click += AnyClick;
             btnShowServiceConfig.Click += AnyClick;
             btnRefreshStatus.Click += AnyClick;
+            btnDatabaseCredentialsDialog.Click += AnyClick;
 
             btnCloseServiceConfig.Click += AnyClick;
-            btnSaveServiceConfig.Click += AnyClick;
-
-            btnClearDatabaseCredentials.Click += AnyClick;
-            btnSetDatabaseCredentials.Click += AnyClick;
+            btnSaveServiceConfig.Click += AnyClick; 
 
             btnClearLog.Click += AnyClick;
             btnClearLog2.Click += AnyClick;
@@ -376,28 +370,23 @@ This application can be used with any Business Central version and it aims to ma
             Log($"A backup of the CustomSettings.config file is saved at \n {BCS.LastBackupFilePath}");
         }
 
-        void ClearDatabaseCredentials()
+        void ShowDatabaseCredentialsDialog()
         {
             BcService BCS = GetCurrentService();
             if (BCS != null)
             {
-                if (MessageBox.Show("Clear Database Credentials?", "Question",  MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                string UserName = "";
+                string Password = "";
+                if (DatabaseCredentialsDialog.ShowModal(ref UserName, ref Password))
                 {
-                    if (BCS.ClearDatabaseCredentials())
-                        ShowRestartServerMessages(BCS);
+                    BCS.SetDatabaseCredentials(UserName, Password);
+                    ShowRestartServerMessages(BCS);
                 }
             }
+
         }
-        void SetDatabaseCredentials()
-        {
-            BcService BCS = GetCurrentService();
-            if (BCS != null)
-            {
-                BCS.SetDatabaseCredentials();
-                ShowRestartServerMessages(BCS);
-            }
-                
-        }
+ 
+ 
 
         void ScrollToEnd()
         {

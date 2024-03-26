@@ -6,7 +6,6 @@
         static readonly string ServicePrefix = "Microsoft Dynamics 365 Business Central Server";
         static List<BcService> fServices;
         ServiceController Service;
-        //PsCommand Command;
 
         bool WaitForStatus(ServiceControllerStatus DesiredStatus)
         {
@@ -236,75 +235,92 @@
             return true;
 
         }
-        
-        public bool ClearDatabaseCredentials()
+ 
+        public bool SetDatabaseCredentials(string UserName, string Password)
         {
-            XmlDocument Doc = new XmlDocument();
-            Doc.Load(ConfigFilePath);
-            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
-
-            string[] DatabaseKeys = { "DatabaseUserName", "ProtectedDatabasePassword" };
-            int Count = 0; 
-
-
-            foreach (string Key in DatabaseKeys)
+            // Windows Authentication -> Clear Database Credentials
+            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password)) 
             {
-                foreach (XmlNode Node in AppSettingsNode)
+                XmlDocument Doc = new XmlDocument();
+                Doc.Load(ConfigFilePath);
+                XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
+
+                string[] DatabaseKeys = { "DatabaseUserName", "ProtectedDatabasePassword" };
+                int Count = 0;
+
+                foreach (string Key in DatabaseKeys)
                 {
-                    if (Node.NodeType == XmlNodeType.Element)
+                    foreach (XmlNode Node in AppSettingsNode)
                     {
-                        XmlElement Element = Node as XmlElement; //CI.Key
-
-                        XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
-
-                        if (Attr != null && Attr.Value == Key)
+                        if (Node.NodeType == XmlNodeType.Element)
                         {
-                            Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
-                            if (Attr != null)
+                            XmlElement Element = Node as XmlElement; //CI.Key
+
+                            XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
+
+                            if (Attr != null && Attr.Value == Key)
                             {
-                                Attr.Value = "";
-                                Count++;
-                                break;
+                                Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
+                                if (Attr != null)
+                                {
+                                    Attr.Value = "";
+                                    Count++;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+
+                BackupConfigFile();
+                Doc.Save(ConfigFilePath);
+
+                return Count == DatabaseKeys.Length;
             }
-
-            BackupConfigFile();
-            Doc.Save(ConfigFilePath);
-
-            return Count == DatabaseKeys.Length;
-        }
-        public void SetDatabaseCredentials()
-        {
-            BackupConfigFile();
-
-            string NavAdminToolFilePath = Path.Combine(ServiceFolder, "NavAdminTool.ps1"); 
- 
-            ProcessStartInfo PSI = new ProcessStartInfo(); 
-            PSI.UseShellExecute = false;
-            PSI.FileName = "powershell.exe";
-            PSI.WindowStyle = ProcessWindowStyle.Normal;
-            PSI.RedirectStandardInput = true;
-
-            using (Process P = new Process())
+            else // SQL Server Authentication -> Set Database Credentials
             {
-                P.StartInfo = PSI;
-                P.Start();
+                BackupConfigFile();
 
-                using (StreamWriter SW = P.StandardInput)
+                string NavAdminToolFilePath = Path.Combine(ServiceFolder, "NavAdminTool.ps1");
+
+                ProcessStartInfo PSI = new ProcessStartInfo();
+                PSI.UseShellExecute = false;
+                PSI.FileName = "powershell.exe";
+                PSI.WindowStyle = ProcessWindowStyle.Hidden;
+                PSI.RedirectStandardInput = true;
+
+                using (Process P = new Process())
                 {
-                    if (SW.BaseStream.CanWrite)
+                    P.StartInfo = PSI;
+                    P.Start();
+
+                    using (StreamWriter SW = P.StandardInput)
                     {
-                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
-                        SW.WriteLine($"Set-NAVServerConfiguration -ServerInstance {InstanceName} -DatabaseCredentials (Get-Credential)");
+                        if (SW.BaseStream.CanWrite)
+                        {
+                            /*
+                            Import-Module 'C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\NavAdminTool.ps1'
+                            $UserName = 'USER_NAME'
+                            $Password = 'PASSWORD'
+                            $Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
+                            $Creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
+                            Set-NAVServerConfiguration -ServerInstance 'BC230' -DatabaseCredentials $Creds 
+                             */
+
+                            SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
+                            SW.WriteLine($"$UserName = '{UserName}'");
+                            SW.WriteLine($"$Password = '{Password}'");
+                            SW.WriteLine($"$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force");
+                            SW.WriteLine($"$Creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password");
+                            SW.WriteLine($"Set-NAVServerConfiguration -ServerInstance '{InstanceName}' -DatabaseCredentials $Creds");
+                        }
                     }
                 }
+
+                return true;
             }
 
         }
-
 
         /* properties */
         static public List<BcService> Services

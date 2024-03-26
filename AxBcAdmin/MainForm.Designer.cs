@@ -38,8 +38,7 @@
             Pager = new TabControl();
             toolStrip1 = new ToolStrip();
             btnSaveServiceConfig = new ToolStripButton();
-            btnClearDatabaseCredentials = new ToolStripButton();
-            btnSetDatabaseCredentials = new ToolStripButton();
+            btnDatabaseCredentialsDialog = new ToolStripButton();
             btnClearLog2 = new ToolStripButton();
             btnCloseServiceConfig = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
@@ -52,6 +51,7 @@
             btnStartService = new ToolStripButton();
             btnRestartService = new ToolStripButton();
             btnStopService = new ToolStripButton();
+            btnRefreshStatus = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             btnShowConfigFile = new ToolStripButton();
             btnShowServiceConfig = new ToolStripButton();
@@ -60,7 +60,8 @@
             btnAboutDialog = new ToolStripButton();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
-            btnRefreshStatus = new ToolStripButton();
+            toolStripSeparator4 = new ToolStripSeparator();
+            toolStripSeparator5 = new ToolStripSeparator();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -141,7 +142,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(24, 24);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnClearDatabaseCredentials, btnSetDatabaseCredentials, btnClearLog2, btnCloseServiceConfig, toolStripSeparator3 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnDatabaseCredentialsDialog, toolStripSeparator3, btnClearLog2, toolStripSeparator4, btnCloseServiceConfig });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(593, 31);
@@ -157,23 +158,14 @@
             btnSaveServiceConfig.Size = new Size(28, 28);
             btnSaveServiceConfig.Text = "Save Settings";
             // 
-            // btnClearDatabaseCredentials
+            // btnDatabaseCredentialsDialog
             // 
-            btnClearDatabaseCredentials.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnClearDatabaseCredentials.Image = Properties.Resources.user;
-            btnClearDatabaseCredentials.ImageTransparentColor = Color.Magenta;
-            btnClearDatabaseCredentials.Name = "btnClearDatabaseCredentials";
-            btnClearDatabaseCredentials.Size = new Size(28, 28);
-            btnClearDatabaseCredentials.Text = "Clear Database Credentials";
-            // 
-            // btnSetDatabaseCredentials
-            // 
-            btnSetDatabaseCredentials.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnSetDatabaseCredentials.Image = Properties.Resources.user_add;
-            btnSetDatabaseCredentials.ImageTransparentColor = Color.Magenta;
-            btnSetDatabaseCredentials.Name = "btnSetDatabaseCredentials";
-            btnSetDatabaseCredentials.Size = new Size(28, 28);
-            btnSetDatabaseCredentials.Text = "Set Database Credentials";
+            btnDatabaseCredentialsDialog.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnDatabaseCredentialsDialog.Image = Properties.Resources.database_key;
+            btnDatabaseCredentialsDialog.ImageTransparentColor = Color.Magenta;
+            btnDatabaseCredentialsDialog.Name = "btnDatabaseCredentialsDialog";
+            btnDatabaseCredentialsDialog.Size = new Size(28, 28);
+            btnDatabaseCredentialsDialog.Text = "Database Credentials";
             // 
             // btnClearLog2
             // 
@@ -238,7 +230,7 @@
             // ToolBar
             // 
             ToolBar.ImageScalingSize = new Size(24, 24);
-            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, btnRefreshStatus, toolStripSeparator1, btnShowConfigFile, btnShowServiceConfig, toolStripSeparator2, btnClearLog, btnAboutDialog, btnExit });
+            ToolBar.Items.AddRange(new ToolStripItem[] { btnStartService, btnRestartService, btnStopService, btnRefreshStatus, toolStripSeparator1, btnShowConfigFile, btnShowServiceConfig, toolStripSeparator2, btnClearLog, btnAboutDialog, toolStripSeparator5, btnExit });
             ToolBar.Location = new Point(0, 0);
             ToolBar.Name = "ToolBar";
             ToolBar.Size = new Size(498, 31);
@@ -271,6 +263,15 @@
             btnStopService.Name = "btnStopService";
             btnStopService.Size = new Size(28, 28);
             btnStopService.Text = "Stop";
+            // 
+            // btnRefreshStatus
+            // 
+            btnRefreshStatus.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnRefreshStatus.Image = Properties.Resources.arrow_refresh_small;
+            btnRefreshStatus.ImageTransparentColor = Color.Magenta;
+            btnRefreshStatus.Name = "btnRefreshStatus";
+            btnRefreshStatus.Size = new Size(28, 28);
+            btnRefreshStatus.Text = "Refresh Status";
             // 
             // toolStripSeparator1
             // 
@@ -339,14 +340,15 @@
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
-            // btnRefreshStatus
+            // toolStripSeparator4
             // 
-            btnRefreshStatus.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnRefreshStatus.Image = Properties.Resources.arrow_refresh_small;
-            btnRefreshStatus.ImageTransparentColor = Color.Magenta;
-            btnRefreshStatus.Name = "btnRefreshStatus";
-            btnRefreshStatus.Size = new Size(28, 28);
-            btnRefreshStatus.Text = "Refresh Status";
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 31);
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 31);
             // 
             // MainForm
             // 
@@ -409,8 +411,9 @@
         private ToolStripButton btnAboutDialog;
         private ToolStripButton btnClearLog;
         private ToolStripButton btnClearLog2;
-        private ToolStripButton btnClearDatabaseCredentials;
-        private ToolStripButton btnSetDatabaseCredentials;
         private ToolStripButton btnRefreshStatus;
+        private ToolStripButton btnDatabaseCredentialsDialog;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripSeparator toolStripSeparator5;
     }
 }
