@@ -1,7 +1,11 @@
-﻿namespace AxBcAdmin
+﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+
+namespace AxBcAdmin
 {
     internal class ConfigItemInfo
     {
+        static List<string> fCategoryList;
+
         static public List<string> ExcludeSettings = new List<string>() {
              "ProtectedDatabasePassword"
             ,"DatabaseUserName"
@@ -43,6 +47,7 @@
             new ConfigItemInfo("General", "Maximum Stream Read Size", "MaxStreamReadSize"),
             new ConfigItemInfo("General", "Multitenant", "Multitenant"),
             new ConfigItemInfo("General", "Network Protocol", "NetworkProtocol"),
+            new ConfigItemInfo("General", "ServerInstance", "Server Instance"),
             new ConfigItemInfo("General", "Services Default Company", "ServicesDefaultCompany"),
             new ConfigItemInfo("General", "Services Default Time Zone", "ServicesDefaultTimeZone"),
             new ConfigItemInfo("General", "Services Language", "ServicesLanguage"),
@@ -83,7 +88,8 @@
             new ConfigItemInfo("Database", "SQL Management Command Timeout", "SqlManagementCommandTimeout"),
             new ConfigItemInfo("Database", "Enable SQL Parameters by Ordinal", "SqlParametersByOrdinal"),
             new ConfigItemInfo("Database", "SQL Query Logging Threshold", "SqlLongRunningThreshold"),
-
+            new ConfigItemInfo("Database", "Allow Reading Cross Tenant Application Database Tables", "AllowReadingCrossTenantApplicationDatabaseTables"),
+ 
 
             new ConfigItemInfo("Develompment", "Allowed Extension Target Level", "ExtensionAllowedTargetLevel"),
             new ConfigItemInfo("Develompment", "Debugger – Long Running SQL Statements Threshold", "LongRunningSqlStatementsInDebuggerThreshold"),
@@ -138,13 +144,13 @@
             new ConfigItemInfo("SOAP services", "Timeout", "SOAPServicesOperationTimeout"),
 
 
-            new ConfigItemInfo("OData services", "APISubscriptionEnabled", "APISubscriptionEnabled"),
-            new ConfigItemInfo("OData services", "APISubscriptionExpirtation", "APISubscriptionExpirtation"),
+            new ConfigItemInfo("OData services", "ApiSubscriptionsEnabled", "ApiSubscriptionsEnabled"),
+            new ConfigItemInfo("OData services", "APISubscriptionExpiration", "APISubscriptionExpiration"),
             new ConfigItemInfo("OData services", "APISubscriptionNotificationUrlTimeout", "APISubscriptionNotificationUrlTimeout"),
             new ConfigItemInfo("OData services", "APISubscriptionSendingNotificationTimeout", "APISubscriptionSendingNotificationTimeout"),
             new ConfigItemInfo("OData services", "APISubscriptionDelayTime", "APISubscriptionDelayTime"),
-            new ConfigItemInfo("OData services", "APISubscriptionMaxNoOfNotifications", "APISubscriptionMaxNoOfNotifications"),
-            new ConfigItemInfo("OData services", "APISubscriptionMaxNoOfSubscriptions", "APISubscriptionMaxNoOfSubscriptions"),
+            new ConfigItemInfo("OData services", "ApiSubscriptionMaxNumberOfNotifications", "ApiSubscriptionMaxNumberOfNotifications"),
+            new ConfigItemInfo("OData services", "ApiSubscriptionMaxNumberOfSubscriptions", "ApiSubscriptionMaxNumberOfSubscriptions"),
             new ConfigItemInfo("OData services", "Enable Add-in Annotations", "ODataEnableExcelAddInAnnotations"),
             new ConfigItemInfo("OData services", "Enable API Services", "ApiServicesEnabled"),
             new ConfigItemInfo("OData services", "Enable OData Services", "ODataServicesEnabled"),
@@ -181,13 +187,11 @@
 
 
 
-            new ConfigItemInfo("Azure key vault client identity", "Client Certificate Store Location", "AzureKeyVaultClientCertificateStoreLocation"),
-            new ConfigItemInfo("Azure key vault client identity", "Client Certificate Store Name", "AzureKeyVaultClientCertificateStoreName"),
-            new ConfigItemInfo("Azure key vault client identity", "Client Certificate Thumbprint", "AzureKeyVaultClientCertificateThumbprint"),
-            new ConfigItemInfo("Azure key vault client identity", "Client ID", "AzureKeyVaultClientId"),
-
-
-            new ConfigItemInfo("Azure key vault extension secrets", "Enable Publisher Validation", "AzureKeyVaultAppSecretsPublisherValidationEnabled"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Store Location", "AzureKeyVaultClientCertificateStoreLocation"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Store Name", "AzureKeyVaultClientCertificateStoreName"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Thumbprint", "AzureKeyVaultClientCertificateThumbprint"),
+            new ConfigItemInfo("Azure key vault", "Client ID", "AzureKeyVaultClientId"),
+            new ConfigItemInfo("Azure key vault", "Enable Publisher Validation", "AzureKeyVaultAppSecretsPublisherValidationEnabled"),
 
 
 
@@ -276,6 +280,24 @@
             this.Category = Category;
             this.Name = Name;
             this.Key = Key;
+        }
+
+        static public string[] CategoryList
+        {
+            get
+            {
+                if (fCategoryList == null)
+                {
+                    fCategoryList = new List<string>();
+                    foreach (ConfigItemInfo CII in List)
+                    { 
+                        if (!fCategoryList.Any(item => string.Equals(item, CII.Category, StringComparison.InvariantCultureIgnoreCase)))
+                            fCategoryList.Add(CII.Category);
+                    }
+                }
+
+                return fCategoryList.ToArray();
+            }
         }
 
         /* properties */

@@ -46,6 +46,7 @@
         {
             this.Service = Service;
 
+            // DisplayName example: Microsoft Dynamics 365 Business Central Server [BC230]
             string S = Service.DisplayName.Remove(0, ServicePrefix.Length).Trim();
             if (S.StartsWith("["))
                 S = S.Remove(0, 1);

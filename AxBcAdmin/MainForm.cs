@@ -280,6 +280,16 @@ This application can be used with any Business Central version and it aims to ma
                 }
             }
             // ----------------------------------------------------------
+            void LogMiscs(List<ConfigItem> List)
+            {
+                StringBuilder SB = new StringBuilder();
+                SB.AppendLine("=========================================================");
+                foreach (var Item in List)
+                    SB.AppendLine($"{Item.Name}  -> {Item.Key}");
+                SB.AppendLine("=========================================================");
+                Log(SB.ToString());
+            }
+            // ----------------------------------------------------------
 
             BcService BCS = GetCurrentService();
             if (BCS != null)
@@ -294,7 +304,8 @@ This application can be used with any Business Central version and it aims to ma
                 List<ConfigItem> TempList = new List<ConfigItem>();
                 TempList.AddRange(BCS.ConfigList.ToArray());
 
-                string[] Categories = [
+                string[] Categories = ConfigItemInfo.CategoryList;
+                /*
                     "General", 
                     "Database", 
                     "Develompment", 
@@ -313,7 +324,8 @@ This application can be used with any Business Central version and it aims to ma
                     "Query", 
                     "Extensions", 
                     "Compatibility",
-                ];
+                    */
+         
 
                 foreach (string Category in Categories)
                 {
@@ -325,6 +337,7 @@ This application can be used with any Business Central version and it aims to ma
                 if (TempList.Count > 0)
                 {
                     TempList = TempList.OrderBy(item => item.Name).ToList();
+                    LogMiscs(TempList);
                     AddTabPage("Miscs", TempList);
                 }
                     

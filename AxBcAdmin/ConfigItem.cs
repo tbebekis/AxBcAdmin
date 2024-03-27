@@ -50,7 +50,7 @@
                 }
             }
 
-            ConfigItemInfo ItemInfo = ConfigItemInfo.List.FirstOrDefault(item => item.Key == this.Key);
+            ConfigItemInfo ItemInfo = ConfigItemInfo.List.FirstOrDefault(item => item.Key.Equals(this.Key, StringComparison.InvariantCultureIgnoreCase));
             this.Category = ItemInfo != null ? ItemInfo.Category : "Miscs"; 
  
         }
