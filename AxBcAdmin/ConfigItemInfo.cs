@@ -1,4 +1,14 @@
-﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Collections.Generic;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using System.Collections;
+using System.ComponentModel.Design;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Reflection;
+using Microsoft.VisualBasic.Devices;
+using System.Windows.Forms;
+using System.ComponentModel;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace AxBcAdmin
 {
@@ -65,7 +75,6 @@ namespace AxBcAdmin
             new ConfigItemInfo("General", "PTESymbolReferenceCacheTTLInHours", "PTESymbolReferenceCacheTTLInHours"),
             new ConfigItemInfo("General", "XmlMetadataCacheSize", "XmlMetadataCacheSize"),
 
-
             new ConfigItemInfo("Database", "Database Instance", "DatabaseInstance"),
             new ConfigItemInfo("Database", "Database Name", "DatabaseName"),
             new ConfigItemInfo("Database", "Database Server", "DatabaseServer"),
@@ -89,8 +98,10 @@ namespace AxBcAdmin
             new ConfigItemInfo("Database", "Enable SQL Parameters by Ordinal", "SqlParametersByOrdinal"),
             new ConfigItemInfo("Database", "SQL Query Logging Threshold", "SqlLongRunningThreshold"),
             new ConfigItemInfo("Database", "Allow Reading Cross Tenant Application Database Tables", "AllowReadingCrossTenantApplicationDatabaseTables"),
+            new ConfigItemInfo("Database", "Sql Lock Timeout Override", "SqlLockTimeoutOverride"),
+            new ConfigItemInfo("Database", "Sql Long Running Threshold For Application Insights", "SqlLongRunningThresholdForApplicationInsights"),
+            new ConfigItemInfo("Database", "Sql Tracing Allowed", "SqlTracingAllowed"),
  
-
             new ConfigItemInfo("Develompment", "Allowed Extension Target Level", "ExtensionAllowedTargetLevel"),
             new ConfigItemInfo("Develompment", "Debugger – Long Running SQL Statements Threshold", "LongRunningSqlStatementsInDebuggerThreshold"),
             new ConfigItemInfo("Develompment", "Debugger - Number of SQL Statements to Show", "AmountOfSqlStatementsInDebugger"),
@@ -107,8 +118,17 @@ namespace AxBcAdmin
             new ConfigItemInfo("Develompment", "HttpClient AL Function Response Size", "NavHttpClientMaxResponseContentSize"),
             new ConfigItemInfo("Develompment", "Port", "DeveloperServicesPort"),
             new ConfigItemInfo("Develompment", "ForceExtensionAllowedTargetLevel", "ForceExtensionAllowedTargetLevel"),
-
-
+            new ConfigItemInfo("Develompment", "Developer Services Max Request Length", "DeveloperServicesMaxRequestLength"),
+            new ConfigItemInfo("Develompment", "Snapshot Debugger Enabled", "SnapshotDebuggerEnabled"),
+            new ConfigItemInfo("Develompment", "Snapshot Debugger Services Enabled", "SnapshotDebuggerServicesSSLEnabled"),
+            new ConfigItemInfo("Develompment", "Snapshot Debugger Services Port", "SnapshotDebuggerServicesPort"),
+            new ConfigItemInfo("Develompment", "Disable Write Inside Try Functions", "DisableWriteInsideTryFunctions"),
+            new ConfigItemInfo("Develompment", "Long Running Function Tracing Threshold", "ALLongRunningFunctionTracingThreshold"),
+            new ConfigItemInfo("Develompment", "Net Fx Components Service Establish Connection Timeout", "NetFxComponentsServiceEstablishConnectionTimeout"),
+            new ConfigItemInfo("Develompment", "Net Fx Components Service Is Side Service", "NetFxComponentsServiceIsSideService"),
+            new ConfigItemInfo("Develompment", "Net Fx Components Service Port", "NetFxComponentsServicePort"),
+            new ConfigItemInfo("Develompment", "Net Fx Components Service Uri", "NetFxComponentsServiceUri"),
+ 
             new ConfigItemInfo("Client services", "Allowed File Types", "ClientServicesAllowedFileTypes"),
             new ConfigItemInfo("Client services", "Chunk Size", "ClientServicesChunkSize"),
             new ConfigItemInfo("Client services", "Compression Threshold", "ClientServicesCompressionThreshold"),
@@ -131,7 +151,6 @@ namespace AxBcAdmin
             new ConfigItemInfo("Client services", "Web Client Base URL", "PublicWebBaseUrl"),
             new ConfigItemInfo("Client services", "Windows Client Base URL", "PublicWinBaseUrl"),
 
-
             new ConfigItemInfo("SOAP services", "Enable SOAP Services", "SOAPServicesEnabled"),
             new ConfigItemInfo("SOAP services", "Enable SSL", "SOAPServicesSSLEnabled"),
             new ConfigItemInfo("SOAP services", "Max Connections", "SOAPMaxConnections"),
@@ -142,7 +161,6 @@ namespace AxBcAdmin
             new ConfigItemInfo("SOAP services", "Port", "SOAPServicesPort"),
             new ConfigItemInfo("SOAP services", "SOAP Base URL", "PublicSOAPBaseUrl"),
             new ConfigItemInfo("SOAP services", "Timeout", "SOAPServicesOperationTimeout"),
-
 
             new ConfigItemInfo("OData services", "ApiSubscriptionsEnabled", "ApiSubscriptionsEnabled"),
             new ConfigItemInfo("OData services", "APISubscriptionExpiration", "APISubscriptionExpiration"),
@@ -170,13 +188,17 @@ namespace AxBcAdmin
             new ConfigItemInfo("OData services", "V4 Max Concurrent Requests", "ODataV4MaxConcurrentRequests"),
             new ConfigItemInfo("OData services", "V4 Max Queued Requests", "ODataV4MaxRequestQueueSize"),
             new ConfigItemInfo("OData services", "Timeout", "ODataServicesOperationTimeout"),
+            new ConfigItemInfo("OData services", "Data Max Concurrent Requests Global Limit", "ODataMaxConcurrentRequestsGlobalLimit"),
+            new ConfigItemInfo("OData services", "Data Max Concurrent Requests Per User ", "ODataMaxConcurrentRequestsPerUser"),
+            new ConfigItemInfo("OData services", "Data Max Request Queue Size Global Limit", "ODataMaxRequestQueueSizeGlobalLimit"),
+            new ConfigItemInfo("OData services", "Data Max Request Queue Size Per User", "ODataMaxRequestQueueSizePerUser"),
+            new ConfigItemInfo("OData services", "Delta Service Client Timeout", "DeltaServiceClientTimeout"),
  
             new ConfigItemInfo("NAS services", "Enable Debugging", "NASServicesEnableDebugging"),
             new ConfigItemInfo("NAS services", "Run NAS Services with Admin Rights", "NASServicesRunWithAdminRights"),
             new ConfigItemInfo("NAS services", "Startup Argument", "NASServicesStartupArgument"),
             new ConfigItemInfo("NAS services", "Startup Codeunit", "NASServicesStartupCodeunit"),
             new ConfigItemInfo("NAS services", "Startup Method", "NASServicesStartupMethod"),
-
 
             new ConfigItemInfo("Management services", "Enable Management Services", "ManagementServicesEnabled"),
             new ConfigItemInfo("Management services", "Idle Client Timeout", "ManagementServicesIdleClientTimeout"),
@@ -185,58 +207,9 @@ namespace AxBcAdmin
             new ConfigItemInfo("Management services", "ManagementApiServicesPort", "ManagementApiServicesPort"),
             new ConfigItemInfo("Management services", "ManagementApiServicesSSLEnabled", "ManagementApiServicesSSLEnabled"),
 
-
-
-            new ConfigItemInfo("Azure key vault", "Client Certificate Store Location", "AzureKeyVaultClientCertificateStoreLocation"),
-            new ConfigItemInfo("Azure key vault", "Client Certificate Store Name", "AzureKeyVaultClientCertificateStoreName"),
-            new ConfigItemInfo("Azure key vault", "Client Certificate Thumbprint", "AzureKeyVaultClientCertificateThumbprint"),
-            new ConfigItemInfo("Azure key vault", "Client ID", "AzureKeyVaultClientId"),
-            new ConfigItemInfo("Azure key vault", "Enable Publisher Validation", "AzureKeyVaultAppSecretsPublisherValidationEnabled"),
-
-
-
-            new ConfigItemInfo("Microsoft Entra ID", "ADOpenIdMetadataLocation", "ADOpenIdMetadataLocation"),
-            new ConfigItemInfo("Microsoft Entra ID", "Application Client Certificate Thumbprint", "AzureActiveDirectoryClientCertificateThumbprint"),
-            new ConfigItemInfo("Microsoft Entra ID", "Application Client ID", "AzureActiveDirectoryClientId"),
-            new ConfigItemInfo("Microsoft Entra ID", "Application Client Secret", "AzureActiveDirectoryClientSecret"),
-            new ConfigItemInfo("Microsoft Entra ID", "Microsoft Entra app ID URI", "AppIdUri"),
-            new ConfigItemInfo("Microsoft Entra ID", "Enable Membership Entitlement", "EnableMembershipEntitlement"),
-            new ConfigItemInfo("Microsoft Entra ID", "Excel add-in AAD client app ID", "ExcelAddInAzureActiveDirectoryClientId"),
-            new ConfigItemInfo("Microsoft Entra ID", "Extended Security Token Lifetime", "ExtendedSecurityTokenLifetime"),
-            new ConfigItemInfo("Microsoft Entra ID", "Valid Audiences", "ValidAudiences"),
-            new ConfigItemInfo("Microsoft Entra ID", "WS-Federation Login Endpoint", "WSFederationLoginEndpoint"),
-            new ConfigItemInfo("Microsoft Entra ID", "WS-Federation Metadata Location", "ClientServicesFederationMetadataLocation"),
-
-
-
-            new ConfigItemInfo("Data encryption", "Encryption Key Provider", "EncryptionProvider"),
-            new ConfigItemInfo("Data encryption", "Key URI", "AzureKeyVaultKeyUri"),
-
-
-            new ConfigItemInfo("Task scheduler", "Default Task Scheduler Session Timeout", "DefaultTaskSchedulerSessionTimeout"),
-            new ConfigItemInfo("Task scheduler", "Enable Task Scheduler", "EnableTaskScheduler"),
-            new ConfigItemInfo("Task scheduler", "Execution Retry Exceptions", "TaskSchedulerExecutionRetryExceptions"),
-            new ConfigItemInfo("Task scheduler", "Maximum Concurrent Running Tasks", "TaskSchedulerMaximumConcurrentRunningTasks"),
-            new ConfigItemInfo("Task scheduler", "System Task Start Time", "TaskSchedulerSystemTaskStartTime"),
-            new ConfigItemInfo("Task scheduler", "System Task End Time", "TaskSchedulerSystemTaskEndTime"),
-            new ConfigItemInfo("Task scheduler", "MaxTaskSchedulerSessionTimeout", "MaxTaskSchedulerSessionTimeout"),
-            new ConfigItemInfo("Task scheduler", "XmlMetadataCacheSize", "XmlMetadataCacheSize"),
-
-
-            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Default Timeout", "BackgroundSessionsDefaultTimeout"),
-            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Default Wait Timeout", "BackgroundSessionsDefaultWaitTimeout"),
-            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Max Concurrent", "BackgroundSessionsMaxConcurrent"),
-            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Max Concurrent", "BackgroundSessionsMaxQueued"),
-            new ConfigItemInfo("Asynchronous processing", "Child Sessions Max Concurrency", "ChildSessionsMaxConcurrency"),
-            new ConfigItemInfo("Asynchronous processing", "Child Sessions Max Queue Length", "ChildSessionsMaxQueueLength"),
-            new ConfigItemInfo("Asynchronous processing", "Page Background Task Allowed Automation Methods", "PageBackgroundTaskAllowedAutomationMethods"),
-            new ConfigItemInfo("Asynchronous processing", "Page Background Task Default Timeout", "PageBackgroundTaskDefaultTimeout"),
-            new ConfigItemInfo("Asynchronous processing", "Page Background Task Max Timeout", "PageBackgroundTaskMaxTimeout"),
-
-
             new ConfigItemInfo("Reports", "Default Max Documents", "ReportDefaultMaxDocuments"),
             new ConfigItemInfo("Reports", "Default Max Rendering Timeout", "ReportDefaultTimeout"),
-            new ConfigItemInfo("Reports", "Default Max Rows", "ReporDefaultMaxRows"),
+            new ConfigItemInfo("Reports", "Default Max Rows", "ReportDefaultMaxRows"),
             new ConfigItemInfo("Reports", "Enable Application Domain Isolation", "ReportAppDomainIsolation"),
             new ConfigItemInfo("Reports", "Enable Save as Excel on Request Pages of RDLC-layout Reports", "EnableSaveToExcelForRdlcReports"),
             new ConfigItemInfo("Reports", "Enable Save as Word on Request Pages of RDLC-layout Reports", "EnableSaveToWordForRdlcReports"),
@@ -248,19 +221,27 @@ namespace AxBcAdmin
             new ConfigItemInfo("Reports", "Report PDF Font Embedding", "ReportPDFFontEmbedding"),
             new ConfigItemInfo("Reports", "ReportingServicePort", "ReportingServicePort"),
             new ConfigItemInfo("Reports", "CalculateBestPaperSizeForReportPrinting", "CalculateBestPaperSizeForReportPrinting"),
-
-
+            new ConfigItemInfo("Reports", "Prohibited Report Server Printers ", "ProhibitedReportServerPrinters"),
+            new ConfigItemInfo("Reports", "Reporting Service Establish Connection Timeout", "ReportingServiceEstablishConnectionTimeout"),
+            new ConfigItemInfo("Reports", "Reporting Service Is Side Service", "ReportingServiceIsSideService"),
+            new ConfigItemInfo("Reports", "Reports Close On Preview List", "ReportsCloseOnPreviewList"),
+            new ConfigItemInfo("Reports", "Enable Windows Pdf Print", "EnableWindowsPdfPrint"),
+            new ConfigItemInfo("Reports", "Windows Pdf Print Timeout", "WindowsPdfPrintTimeout"),
+ 
             new ConfigItemInfo("Query", "Max Execution Timeout", "QueryTimeout"),
             new ConfigItemInfo("Query", "Max Rows", "QueryMaxRows"),
+            new ConfigItemInfo("Query", "Disable Query Hint Loop Join", "DisableQueryHintLoopJoin"), 
+            new ConfigItemInfo("Query", "Designed Query Services Enabled ", "DesignedQueryServicesEnabled"),
+            new ConfigItemInfo("Query", "Designed Query Services SSL Enabled", "DesignedQueryServicesSSLEnabled"),
+            new ConfigItemInfo("Query", "Designed Query Services Port", "DesignedQueryServicesPort"), 
 
+            new ConfigItemInfo("Data encryption", "Encryption Key Provider", "EncryptionProvider"),
+            new ConfigItemInfo("Data encryption", "Key URI", "AzureKeyVaultKeyUri"),
 
             new ConfigItemInfo("Extensions", "Enable Profile Cache Synchronization", "EnableProfileCacheSynchronization"),
             new ConfigItemInfo("Extensions", "Overwrite Existing Translations", "OverwriteExistingTranslations"),
             new ConfigItemInfo("Extensions", "Required Extensions", "RequiredExtensions"),
             new ConfigItemInfo("Extensions", "Solution Version Extension", "SolutionVersionExtension"),
-
-
-
 
             new ConfigItemInfo("Compatibility", "AL Legacy Compatible Date Format Culture List", "ALCompatibleDateFormatCultureList"),
             new ConfigItemInfo("Compatibility", "Enable Client Callbacks in Write Transactions", "AllowSessionCallSuspendWhenWriteTransactionStarted"),
@@ -270,6 +251,43 @@ namespace AxBcAdmin
             new ConfigItemInfo("Compatibility", "Use Client Timestamp For Report Execution Timestamp", "ReplaceReportExecutionTimeWithClientTime"),
             new ConfigItemInfo("Compatibility", "Use FIND('-') to Populate Pages Instead of FIND('=><')", "UseFindMinusWhenPopulatingPage"),
             new ConfigItemInfo("Compatibility", "Use Permission Sets From Extensions", "UsePermissionSetsFromExtensions"),
+
+            new ConfigItemInfo("Task scheduler", "Default Task Scheduler Session Timeout", "DefaultTaskSchedulerSessionTimeout"),
+            new ConfigItemInfo("Task scheduler", "Enable Task Scheduler", "EnableTaskScheduler"),
+            new ConfigItemInfo("Task scheduler", "Execution Retry Exceptions", "TaskSchedulerExecutionRetryExceptions"),
+            new ConfigItemInfo("Task scheduler", "Maximum Concurrent Running Tasks", "TaskSchedulerMaximumConcurrentRunningTasks"),
+            new ConfigItemInfo("Task scheduler", "System Task Start Time", "TaskSchedulerSystemTaskStartTime"),
+            new ConfigItemInfo("Task scheduler", "System Task End Time", "TaskSchedulerSystemTaskEndTime"),
+            new ConfigItemInfo("Task scheduler", "MaxTaskSchedulerSessionTimeout", "MaxTaskSchedulerSessionTimeout"),
+            new ConfigItemInfo("Task scheduler", "XmlMetadataCacheSize", "XmlMetadataCacheSize"),
+
+            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Default Timeout", "BackgroundSessionsDefaultTimeout"),
+            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Default Wait Timeout", "BackgroundSessionsDefaultWaitTimeout"),
+            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Max Concurrent", "BackgroundSessionsMaxConcurrent"),
+            new ConfigItemInfo("Asynchronous processing", "Background Sessions - Max Concurrent", "BackgroundSessionsMaxQueued"),
+            new ConfigItemInfo("Asynchronous processing", "Child Sessions Max Concurrency", "ChildSessionsMaxConcurrency"),
+            new ConfigItemInfo("Asynchronous processing", "Child Sessions Max Queue Length", "ChildSessionsMaxQueueLength"),
+            new ConfigItemInfo("Asynchronous processing", "Page Background Task Allowed Automation Methods", "PageBackgroundTaskAllowedAutomationMethods"),
+            new ConfigItemInfo("Asynchronous processing", "Page Background Task Default Timeout", "PageBackgroundTaskDefaultTimeout"),
+            new ConfigItemInfo("Asynchronous processing", "Page Background Task Max Timeout", "PageBackgroundTaskMaxTimeout"),
+ 
+            new ConfigItemInfo("Azure key vault", "Client ID", "AzureKeyVaultClientId"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Store Location", "AzureKeyVaultClientCertificateStoreLocation"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Store Name", "AzureKeyVaultClientCertificateStoreName"),
+            new ConfigItemInfo("Azure key vault", "Client Certificate Thumbprint", "AzureKeyVaultClientCertificateThumbprint"),
+            new ConfigItemInfo("Azure key vault", "Enable Publisher Validation", "AzureKeyVaultAppSecretsPublisherValidationEnabled"),
+
+            new ConfigItemInfo("Microsoft Entra ID", "Microsoft Entra app ID URI", "AppIdUri"),
+            new ConfigItemInfo("Microsoft Entra ID", "Application Client ID", "AzureActiveDirectoryClientId"),
+            new ConfigItemInfo("Microsoft Entra ID", "Application Client Secret", "AzureActiveDirectoryClientSecret"),
+            new ConfigItemInfo("Microsoft Entra ID", "Valid Audiences", "ValidAudiences"),
+            new ConfigItemInfo("Microsoft Entra ID", "WS-Federation Login Endpoint", "WSFederationLoginEndpoint"),
+            new ConfigItemInfo("Microsoft Entra ID", "WS-Federation Metadata Location", "ClientServicesFederationMetadataLocation"),
+            new ConfigItemInfo("Microsoft Entra ID", "ADOpenIdMetadataLocation", "ADOpenIdMetadataLocation"),
+            new ConfigItemInfo("Microsoft Entra ID", "Application Client Certificate Thumbprint", "AzureActiveDirectoryClientCertificateThumbprint"),
+            new ConfigItemInfo("Microsoft Entra ID", "Enable Membership Entitlement", "EnableMembershipEntitlement"),
+            new ConfigItemInfo("Microsoft Entra ID", "Excel add-in AAD client app ID", "ExcelAddInAzureActiveDirectoryClientId"),
+            new ConfigItemInfo("Microsoft Entra ID", "Extended Security Token Lifetime", "ExtendedSecurityTokenLifetime"),            
 
         };
 

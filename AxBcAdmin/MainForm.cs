@@ -251,8 +251,8 @@ This application can be used with any Business Central version and it aims to ma
             // ----------------------------------------------------------
             List<ConfigItem> GetCategoryItems(string Category, List<ConfigItem> SourceList)
             {
-                List<ConfigItem> ResultList = SourceList.FindAll(x => x.Category == Category);
-                SourceList.RemoveAll(x => x.Category == Category);
+                List<ConfigItem> ResultList = SourceList.FindAll(x => string.Equals(x.Category ,Category, StringComparison.InvariantCultureIgnoreCase));
+                SourceList.RemoveAll(x => string.Equals(x.Category, Category, StringComparison.InvariantCultureIgnoreCase));
                 return ResultList;
             }
             // ----------------------------------------------------------
@@ -301,46 +301,23 @@ This application can be used with any Business Central version and it aims to ma
                 pnlServices.Visible = false;
                 pnlSettings.Visible = true;
 
-                List<ConfigItem> TempList = new List<ConfigItem>();
-                TempList.AddRange(BCS.ConfigList.ToArray());
-
-                string[] Categories = ConfigItemInfo.CategoryList;
-                /*
-                    "General", 
-                    "Database", 
-                    "Develompment", 
-                    "Client services", 
-                    "SOAP services", 
-                    "OData services", 
-                    "NAS services", 
-                    "Management services",
-                    "Azure key vault client identity", 
-                    "Azure key vault extension secrets", 
-                    "Microsoft Entra ID", 
-                    "Data encryption", 
-                    "Task scheduler", 
-                    "Asynchronous processing",
-                    "Reports", 
-                    "Query", 
-                    "Extensions", 
-                    "Compatibility",
-                    */
-         
-
-                foreach (string Category in Categories)
+                List<ConfigItem> TempList = new List<ConfigItem>(BCS.ConfigList.ToArray()); 
+ 
+                // all categories, except Miscs
+                foreach (string Category in ConfigItemInfo.CategoryList)
                 {
                     List<ConfigItem> List = GetCategoryItems(Category, TempList);
                     if (List.Count > 0)
                         AddTabPage(Category, List);
                 }
 
+                // Miscs category
                 if (TempList.Count > 0)
                 {
                     TempList = TempList.OrderBy(item => item.Name).ToList();
                     LogMiscs(TempList);
                     AddTabPage("Miscs", TempList);
-                }
-                    
+                }                    
  
             }
         }
