@@ -39,9 +39,10 @@
             toolStrip1 = new ToolStrip();
             btnSaveServiceConfig = new ToolStripButton();
             btnDatabaseCredentialsDialog = new ToolStripButton();
-            btnClearLog2 = new ToolStripButton();
-            btnCloseServiceConfig = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
+            btnClearLog2 = new ToolStripButton();
+            toolStripSeparator4 = new ToolStripSeparator();
+            btnCloseServiceConfig = new ToolStripButton();
             pnlServices = new Panel();
             gridServices = new DataGridView();
             coName = new DataGridViewTextBoxColumn();
@@ -58,10 +59,12 @@
             toolStripSeparator2 = new ToolStripSeparator();
             btnClearLog = new ToolStripButton();
             btnAboutDialog = new ToolStripButton();
+            toolStripSeparator5 = new ToolStripSeparator();
             btnExit = new ToolStripButton();
             edtLog = new RichTextBox();
-            toolStripSeparator4 = new ToolStripSeparator();
-            toolStripSeparator5 = new ToolStripSeparator();
+            btnExportLicense = new ToolStripButton();
+            btnImportLicense = new ToolStripButton();
+            toolStripSeparator6 = new ToolStripSeparator();
             statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Splitter).BeginInit();
             Splitter.Panel1.SuspendLayout();
@@ -142,7 +145,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(24, 24);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnDatabaseCredentialsDialog, toolStripSeparator3, btnClearLog2, toolStripSeparator4, btnCloseServiceConfig });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnSaveServiceConfig, btnDatabaseCredentialsDialog, toolStripSeparator3, btnExportLicense, btnImportLicense, toolStripSeparator6, btnClearLog2, toolStripSeparator4, btnCloseServiceConfig });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(593, 31);
@@ -167,6 +170,11 @@
             btnDatabaseCredentialsDialog.Size = new Size(28, 28);
             btnDatabaseCredentialsDialog.Text = "Database Credentials";
             // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 31);
+            // 
             // btnClearLog2
             // 
             btnClearLog2.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -176,6 +184,11 @@
             btnClearLog2.Size = new Size(28, 28);
             btnClearLog2.Text = "Clear Log";
             // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 31);
+            // 
             // btnCloseServiceConfig
             // 
             btnCloseServiceConfig.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -184,11 +197,6 @@
             btnCloseServiceConfig.Name = "btnCloseServiceConfig";
             btnCloseServiceConfig.Size = new Size(28, 28);
             btnCloseServiceConfig.Text = "Close";
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 31);
             // 
             // pnlServices
             // 
@@ -319,6 +327,11 @@
             btnAboutDialog.Size = new Size(28, 28);
             btnAboutDialog.Text = "About";
             // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 31);
+            // 
             // btnExit
             // 
             btnExit.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -340,15 +353,28 @@
             edtLog.TabIndex = 3;
             edtLog.Text = "";
             // 
-            // toolStripSeparator4
+            // btnExportLicense
             // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(6, 31);
+            btnExportLicense.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnExportLicense.Image = Properties.Resources.license_management;
+            btnExportLicense.ImageTransparentColor = Color.Magenta;
+            btnExportLicense.Name = "btnExportLicense";
+            btnExportLicense.Size = new Size(28, 28);
+            btnExportLicense.Text = "Export License";
             // 
-            // toolStripSeparator5
+            // btnImportLicense
             // 
-            toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(6, 31);
+            btnImportLicense.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnImportLicense.Image = Properties.Resources.license_key;
+            btnImportLicense.ImageTransparentColor = Color.Magenta;
+            btnImportLicense.Name = "btnImportLicense";
+            btnImportLicense.Size = new Size(28, 28);
+            btnImportLicense.Text = "Import License";
+            // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(6, 31);
             // 
             // MainForm
             // 
@@ -415,5 +441,8 @@
         private ToolStripButton btnDatabaseCredentialsDialog;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator5;
+        private ToolStripButton btnExportLicense;
+        private ToolStripButton btnImportLicense;
+        private ToolStripSeparator toolStripSeparator6;
     }
 }

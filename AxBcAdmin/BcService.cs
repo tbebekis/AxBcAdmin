@@ -1,4 +1,8 @@
-﻿namespace AxBcAdmin
+﻿using System;
+using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
+namespace AxBcAdmin
 {
     internal class BcService
     {
@@ -280,15 +284,13 @@
             }
             else // SQL Server Authentication -> Set Database Credentials
             {
-                BackupConfigFile();
-
-                string NavAdminToolFilePath = Path.Combine(ServiceFolder, "NavAdminTool.ps1");
+                BackupConfigFile(); 
 
                 ProcessStartInfo PSI = new ProcessStartInfo();
                 PSI.UseShellExecute = false;
                 PSI.FileName = "powershell.exe";
                 PSI.WindowStyle = ProcessWindowStyle.Hidden;
-                PSI.RedirectStandardInput = true;
+                PSI.RedirectStandardInput = true; 
 
                 using (Process P = new Process())
                 {
@@ -321,6 +323,77 @@
                 return true;
             }
 
+        }
+
+        public void ExportLicense()
+        {
+            StringBuilder sbErrors = new StringBuilder();
+            StringBuilder sbOutput = new StringBuilder();
+
+            ProcessStartInfo PSI = new ProcessStartInfo();
+            PSI.UseShellExecute = false;
+            PSI.FileName = "powershell.exe";
+            PSI.WindowStyle = ProcessWindowStyle.Hidden;
+            PSI.CreateNoWindow = true;
+            PSI.RedirectStandardError = true;
+            PSI.RedirectStandardInput = true;
+            PSI.RedirectStandardOutput = true;
+
+            using (Process P = new Process())
+            {
+                P.StartInfo = PSI;
+                P.ErrorDataReceived += (sender, e) => { sbErrors.AppendLine(e.Data); };
+                P.OutputDataReceived += (sender, e) => { sbOutput.AppendLine(e.Data); };
+
+                P.Start();
+
+                using (StreamWriter SW = P.StandardInput)
+                {
+                    if (SW.BaseStream.CanWrite)
+                    { 
+                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
+                        SW.WriteLine($"Export-NAVServerLicenseInformation -ServerInstance '{InstanceName}'"); 
+                    }
+                }
+                
+                P.BeginOutputReadLine();
+                P.BeginErrorReadLine();
+                P.WaitForExit();
+            }
+
+ 
+            if (sbErrors.ToString().Trim().Length > 0)
+                App.Throw(sbErrors.ToString());
+
+            if (sbOutput.Length > 0)
+            {
+                App.Log(sbOutput.ToString());
+            }
+        }
+        public void ImportLicense(string LicenseFilePath)
+        {
+            ProcessStartInfo PSI = new ProcessStartInfo();
+            PSI.UseShellExecute = false;
+            PSI.FileName = "powershell.exe";
+            PSI.WindowStyle = ProcessWindowStyle.Hidden;
+            PSI.RedirectStandardInput = true;
+
+            using (Process P = new Process())
+            {
+                P.StartInfo = PSI;
+                P.Start();
+
+                using (StreamWriter SW = P.StandardInput)
+                {
+                    if (SW.BaseStream.CanWrite)
+                    {
+                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
+                        SW.WriteLine($"$LicensePath = '{LicenseFilePath}'"); 
+                        SW.WriteLine($"$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force");
+                        SW.WriteLine($"Import-NAVServerLicense -ServerInstance '{InstanceName}' -LicenseFile $LicensePath");
+                    }
+                }
+            }
         }
 
         /* properties */
@@ -361,6 +434,7 @@
         public string InstanceName { get; private set; }     // e.g. BC230
         public string ServiceFolder { get; private set; }    // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\
         public string ConfigFilePath { get; private set; }   // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config
+        public string NavAdminToolFilePath { get { return Path.Combine(ServiceFolder, "NavAdminTool.ps1"); } }
         public List<ConfigItem> ConfigList { get; } = new List<ConfigItem>();
         public bool IsRunning { get { return Service.Status == ServiceControllerStatus.Running || Service.Status == ServiceControllerStatus.StartPending; } }
         public string LastBackupFilePath { get; private set; }

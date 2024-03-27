@@ -82,6 +82,14 @@ This application can be used with any Business Central version and it aims to ma
             {
                 ShowDatabaseCredentialsDialog();
             }
+            else if (btnExportLicense == sender)
+            {
+                ExportLicense();
+            }
+            else if (btnImportLicense == sender)
+            {
+                ImportLicense();
+            }
 
         }
 
@@ -133,6 +141,9 @@ This application can be used with any Business Central version and it aims to ma
 
             btnClearLog.Click += AnyClick;
             btnClearLog2.Click += AnyClick;
+
+            btnExportLicense.Click += AnyClick;
+            btnImportLicense.Click += AnyClick;
 
             bsServices.PositionChanged += bsServices_PositionChanged;
             gridServices.MouseDoubleClick += gridServices_MouseDoubleClick;
@@ -373,10 +384,38 @@ This application can be used with any Business Central version and it aims to ma
                     ShowRestartServerMessages(BCS);
                 }
             }
-
         }
  
- 
+        void ExportLicense()
+        {
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
+            {
+                BCS.ExportLicense();
+                MessageBox.Show("Please, check the last log entry");
+            }
+                
+        }
+        void ImportLicense()
+        {
+            BcService BCS = GetCurrentService();
+            if (BCS != null)
+            {
+                string LicenseFilePath = "";
+                using(OpenFileDialog F = new OpenFileDialog())
+                {
+                    F.Filter = @"FLF files (*.flf)|*.flf|BcLicense files (*.bclicense)|*.bclicense|All files (*.*)|*.*";
+                    if (F.ShowDialog() == DialogResult.OK)
+                    {
+                        LicenseFilePath = F.FileName;
+                    }
+                }
+
+                if (File.Exists(LicenseFilePath))
+                    BCS.ImportLicense(LicenseFilePath;
+            }
+                
+        }
 
         void ScrollToEnd()
         {
