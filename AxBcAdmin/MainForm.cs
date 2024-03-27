@@ -412,7 +412,7 @@ This application can be used with any Business Central version and it aims to ma
                 }
 
                 if (File.Exists(LicenseFilePath))
-                    BCS.ImportLicense(LicenseFilePath;
+                    BCS.ImportLicense(LicenseFilePath);
             }
                 
         }
