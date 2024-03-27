@@ -42,7 +42,9 @@ namespace AxBcAdmin
                 cboValueList.SelectedValueChanged += cboValueList_SelectedValueChanged;
             } 
 
-            lblKey.Click += lblKey_Click;
+            lblKey.Click += AnyClick;
+            edtValue.Click += AnyClick;
+            cboValueList.Click += AnyClick;
         }
 
         void cboValueList_SelectedValueChanged(object sender, EventArgs e)
@@ -55,7 +57,7 @@ namespace AxBcAdmin
             ConfigItem.Value = edtValue.Text;
         }
 
-        void lblKey_Click(object sender, EventArgs e)
+        void AnyClick(object sender, EventArgs e)
         {
             App.Log("----------------------------------------------"); 
             App.Log(ConfigItem.Name);

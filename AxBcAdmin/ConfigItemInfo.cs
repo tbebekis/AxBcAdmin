@@ -57,7 +57,7 @@ namespace AxBcAdmin
             new ConfigItemInfo("General", "Maximum Stream Read Size", "MaxStreamReadSize"),
             new ConfigItemInfo("General", "Multitenant", "Multitenant"),
             new ConfigItemInfo("General", "Network Protocol", "NetworkProtocol"),
-            new ConfigItemInfo("General", "ServerInstance", "Server Instance"),
+            new ConfigItemInfo("General", "Server Instance", "ServerInstance"),
             new ConfigItemInfo("General", "Services Default Company", "ServicesDefaultCompany"),
             new ConfigItemInfo("General", "Services Default Time Zone", "ServicesDefaultTimeZone"),
             new ConfigItemInfo("General", "Services Language", "ServicesLanguage"),
