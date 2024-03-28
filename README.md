@@ -44,11 +44,13 @@ Just uncompress the `AxBcAdmin.zip` file somewhere in the Business Central serve
 
 This application searches [Window Services](https://en.wikipedia.org/wiki/Windows_service) of the local machine, collects any service with a name starting as `Microsoft Dynamics 365 Business Central Server` and displays these services in a grid.
 
-This application reads the `CustomeSettings.config` file and creates an input control for any setting it founds in the file. It also splits settings into Categories. Each Category is displayed in its own tab page.
+The administrator may select a BC service to start, restart, stop, edit its configuration and configure database credentials. This application writes any setting change directly to `CustomeSettings.config` file.
 
-The administrator may select a BC service to start, restart, stop or edit its configuration. This application writes any setting change directly to `CustomeSettings.config` file.
+The application reads the `CustomeSettings.config` file of the selected BC service and creates an input control for any setting it founds in the file. It also splits settings into Categories. Each Category is displayed in its own tab page.
 
-The `Database Credentials` toolbar button displays a dialog box where the administrator may configure the [database authentication](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/configure-sql-server-authentication) of the Business Central server.
+The `Database Credentials` toolbar button displays a dialog box where the administrator may configure the [database authentication](https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/administration/configure-sql-server-authentication) of the BC server.
+
+The `Export License` and `Import License` toolbar buttons are used in exporting and importing licenses to the BC server.
 
 
 
