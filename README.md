@@ -36,12 +36,15 @@ The administrator can
 - start, restart or stop the BC service
 - configure any available setting
 - configure Database Credentials
+- export and import BC License
 
 ## How AxBcAdmin works
 
 Just uncompress the `AxBcAdmin.zip` file somewhere in the Business Central server machine and then run the AxBcAdmin.exe.
 
 This application searches [Window Services](https://en.wikipedia.org/wiki/Windows_service) of the local machine, collects any service with a name starting as `Microsoft Dynamics 365 Business Central Server` and displays these services in a grid.
+
+This application reads the `CustomeSettings.config` file and creates an input control for any setting it founds in the file. It also splits settings into Categories. Each Category is displayed in its own tab page.
 
 The administrator may select a BC service to start, restart, stop or edit its configuration. This application writes any setting change directly to `CustomeSettings.config` file.
 

@@ -3,6 +3,10 @@ namespace AxBcAdmin
     internal static class Program
     { 
         static MainForm MainForm = null;
+        
+        /// <summary>
+        /// Displays an error message
+        /// </summary>
         static void DisplayError(Exception e)
         {
             if (MainForm != null)

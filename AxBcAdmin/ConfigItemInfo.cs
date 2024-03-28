@@ -12,16 +12,27 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 
 namespace AxBcAdmin
 {
+
+    /// <summary>
+    /// Helper
+    /// </summary>
     internal class ConfigItemInfo
     {
+        /* private */
         static List<string> fCategoryList;
 
+        /* public */
+        /// <summary>
+        /// A list of settings to exclude when constructing the configuration list
+        /// </summary>
         static public List<string> ExcludeSettings = new List<string>() {
              "ProtectedDatabasePassword"
             ,"DatabaseUserName"
             ,""
         };
-
+        /// <summary>
+        /// A list of settings and the Category of each one
+        /// </summary>
         static public readonly List<ConfigItemInfo> List = new List<ConfigItemInfo>()
         {
 
@@ -74,6 +85,7 @@ namespace AxBcAdmin
             new ConfigItemInfo("General", "PTESymbolReferenceCacheSize", "PTESymbolReferenceCacheSize"),
             new ConfigItemInfo("General", "PTESymbolReferenceCacheTTLInHours", "PTESymbolReferenceCacheTTLInHours"),
             new ConfigItemInfo("General", "XmlMetadataCacheSize", "XmlMetadataCacheSize"),
+            new ConfigItemInfo("General", "Encryption Key Provider", "EncryptionProvider"),
 
             new ConfigItemInfo("Database", "Database Instance", "DatabaseInstance"),
             new ConfigItemInfo("Database", "Database Name", "DatabaseName"),
@@ -234,10 +246,7 @@ namespace AxBcAdmin
             new ConfigItemInfo("Query", "Designed Query Services Enabled ", "DesignedQueryServicesEnabled"),
             new ConfigItemInfo("Query", "Designed Query Services SSL Enabled", "DesignedQueryServicesSSLEnabled"),
             new ConfigItemInfo("Query", "Designed Query Services Port", "DesignedQueryServicesPort"), 
-
-            new ConfigItemInfo("Data encryption", "Encryption Key Provider", "EncryptionProvider"),
-            new ConfigItemInfo("Data encryption", "Key URI", "AzureKeyVaultKeyUri"),
-
+ 
             new ConfigItemInfo("Extensions", "Enable Profile Cache Synchronization", "EnableProfileCacheSynchronization"),
             new ConfigItemInfo("Extensions", "Overwrite Existing Translations", "OverwriteExistingTranslations"),
             new ConfigItemInfo("Extensions", "Required Extensions", "RequiredExtensions"),
@@ -276,6 +285,7 @@ namespace AxBcAdmin
             new ConfigItemInfo("Azure key vault", "Client Certificate Store Name", "AzureKeyVaultClientCertificateStoreName"),
             new ConfigItemInfo("Azure key vault", "Client Certificate Thumbprint", "AzureKeyVaultClientCertificateThumbprint"),
             new ConfigItemInfo("Azure key vault", "Enable Publisher Validation", "AzureKeyVaultAppSecretsPublisherValidationEnabled"),
+            new ConfigItemInfo("Azure key vault", "Key URI", "AzureKeyVaultKeyUri"),
 
             new ConfigItemInfo("Microsoft Entra ID", "Microsoft Entra app ID URI", "AppIdUri"),
             new ConfigItemInfo("Microsoft Entra ID", "Application Client ID", "AzureActiveDirectoryClientId"),
@@ -290,9 +300,16 @@ namespace AxBcAdmin
             new ConfigItemInfo("Microsoft Entra ID", "Extended Security Token Lifetime", "ExtendedSecurityTokenLifetime"),            
 
         };
+ 
 
         /* construction */
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ConfigItemInfo() { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ConfigItemInfo(string Category, string Name, string Key)
         {
             this.Category = Category;
@@ -300,6 +317,9 @@ namespace AxBcAdmin
             this.Key = Key;
         }
 
+        /// <summary>
+        /// Returns a string list of Categories
+        /// </summary>
         static public string[] CategoryList
         {
             get
@@ -319,8 +339,18 @@ namespace AxBcAdmin
         }
 
         /* properties */
+        /// <summary>
+        /// Category
+        /// </summary>
         public string Category { get; set; }
+        /// <summary>
+        /// Name.
+        /// <para>NOTE: Not actually used anywhere.</para>
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Key
+        /// </summary>
         public string Key { get; set; }
     }
 

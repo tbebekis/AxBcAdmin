@@ -1,17 +1,30 @@
 ﻿namespace AxBcAdmin
 {
+
+    /// <summary>
+    /// Helper. Represents this application
+    /// </summary>
     static internal class App
     {
 
+        /// <summary>
+        /// Log method
+        /// </summary>
         static public void Log(string Text)
         {
             if (MainForm != null && !MainForm.IsDisposed)
                 MainForm.Log(Text);
         }
+        /// <summary>
+        /// Throws an Exception with the specified message.
+        /// </summary>
         static public void Throw(string ErrorMessage)
         {
             throw new ApplicationException(ErrorMessage);
         }
+        /// <summary>
+        /// Connects a grid to its binding source and initializes the grid.
+        /// </summary>
         static public void InitializeGrid(BindingSource bs, DataGridView Grid)
         {
             Grid.AutoGenerateColumns = false;

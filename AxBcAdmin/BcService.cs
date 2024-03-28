@@ -4,6 +4,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AxBcAdmin
 {
+
+    /// <summary>
+    /// Represents a Business Central service (Windows Service)
+    /// </summary>
     internal class BcService
     {
         /* private */
@@ -11,6 +15,10 @@ namespace AxBcAdmin
         static List<BcService> fServices;
         ServiceController Service;
 
+        /// <summary>
+        /// Waits for the BC service to reach a specified status.
+        /// <para>It tries a specified number of times with a specified timeout in between.</para>
+        /// </summary>
         bool WaitForStatus(ServiceControllerStatus DesiredStatus)
         {
             TimeSpan Timeout = new TimeSpan(0, 0, 20);
@@ -35,6 +43,9 @@ namespace AxBcAdmin
 
             return false;
         }
+        /// <summary>
+        /// Backups the <c>CustomSettings.config</c> file, just before write any change to it.
+        /// </summary>
         void BackupConfigFile()
         {
             string BackupFolder = Path.Combine(App.AppFolder, "Backup");
@@ -46,6 +57,11 @@ namespace AxBcAdmin
         }
 
         /* construction */
+        /// <summary>
+        /// Constructor.
+        /// <para>Uses the <see cref="ManagementObject"/> class to get the "PathName" entry of the BC service. </para>
+        /// <para>Analyzes the "PathName" entry and and gets the service folder and the path to <c>CustomSettings.config</c>. </para>
+        /// </summary>
         public BcService(ServiceController Service)
         {
             this.Service = Service;
@@ -61,7 +77,7 @@ namespace AxBcAdmin
             this.ServiceName = Service.ServiceName;
             this.InstanceName = S;
 
-            using (ManagementObject wmiService = new ManagementObject($"Win32_Service.Name='{Service.ServiceName}'")) // ("Win32_Service.Name='" + Service.ServiceName + "'"))
+            using (ManagementObject wmiService = new ManagementObject($"Win32_Service.Name='{Service.ServiceName}'"))  
             {
                 wmiService.Get();
                 S = wmiService["PathName"].ToString().Trim();
@@ -84,11 +100,17 @@ namespace AxBcAdmin
         }
 
         /* public */
+        /// <summary>
+        /// Override. Returns a string representation of this instance.
+        /// </summary>
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(InstanceName) ? InstanceName : base.ToString();
         }
 
+        /// <summary>
+        /// Restarts the service.
+        /// </summary>
         public void Restart()
         {
             try
@@ -120,6 +142,9 @@ namespace AxBcAdmin
                 App.Log(ex.Message);
             }
         }
+        /// <summary>
+        /// Starts the service.
+        /// </summary>
         public void Start()
         {
             if (!IsRunning)
@@ -145,6 +170,9 @@ namespace AxBcAdmin
             }
 
         }
+        /// <summary>
+        /// Stops the service.
+        /// </summary>
         public void Stop()
         {
             try
@@ -167,10 +195,20 @@ namespace AxBcAdmin
             }
         }
 
+
+        /// <summary>
+        /// Removes all items from the <see cref="ConfigList"/>.
+        /// <para><see cref="ConfigList"/> is a list of <see cref="ConfigItem"/> instances. </para>
+        /// <para>A <see cref="ConfigItem"/> instance represents a settings in the <c>CustomSettings.config</c> file.</para>
+        /// </summary>
         public void ClearConfig()
         {
             ConfigList.Clear();
         }
+        /// <summary>
+        /// Loads <see cref="ConfigList"/> with <see cref="ConfigItem"/> instances, by reading the <c>CustomSettings.config</c> file.
+        /// <para>A <see cref="ConfigItem"/> instance represents a settings in the <c>CustomSettings.config</c> file.</para>
+        /// </summary>
         public void LoadConfig()
         {
             ConfigList.Clear();
@@ -198,6 +236,10 @@ namespace AxBcAdmin
             }
 
         }
+        /// <summary>
+        /// Saves any changes made to <see cref="ConfigItem"/> instances, to the <c>CustomSettings.config</c> file.
+        /// <para>A <see cref="ConfigItem"/> instance represents a settings in the <c>CustomSettings.config</c> file.</para>
+        /// </summary>
         public bool SaveConfig()
         {
             List<ConfigItem> ChangedList = ConfigList.Where(item => item.IsChanged).ToList();
@@ -241,6 +283,9 @@ namespace AxBcAdmin
 
         }
  
+        /// <summary>
+        /// Uses the <see cref="Process"/> class in order to execute PowerShell a list of specified commands.
+        /// </summary>
         void ExecutePowerShell(List<string> SourceLines)
         {
             StringBuilder sbErrors = new StringBuilder();
@@ -286,6 +331,9 @@ namespace AxBcAdmin
 
         }
         
+        /// <summary>
+        /// Sets Windows Authentication as authentication mode of the service to its database.
+        /// </summary>
         bool SetWindowsAuthentication()
         {
             XmlDocument Doc = new XmlDocument();
@@ -324,6 +372,9 @@ namespace AxBcAdmin
 
             return Count == DatabaseKeys.Length;
         }
+        /// <summary>
+        /// Sets SQL Server Authentication as authentication mode of the service to its database.
+        /// </summary>
         bool SetSqlServerAuthentication(string UserName, string Password)
         {
             BackupConfigFile();
@@ -341,7 +392,11 @@ namespace AxBcAdmin
 
             return true;
         }
- 
+
+        /// <summary>
+        /// Sets the database credentials used by the service in order to authenticate to its database.
+        /// <para>Passing empty strings means Windows Authentication, else SQL Server Authentication is used. </para>
+        /// </summary>
         public bool SetDatabaseCredentials(string UserName, string Password)
         {
             // Windows Authentication -> Clear Database Credentials
@@ -351,6 +406,9 @@ namespace AxBcAdmin
                 return SetSqlServerAuthentication(UserName, Password);
         }
 
+        /// <summary>
+        /// Exports the current BC license to the log.
+        /// </summary>
         public void ExportLicense()
         {
             List<string> SourceLines = new List<string>();
@@ -360,6 +418,9 @@ namespace AxBcAdmin
 
             ExecutePowerShell(SourceLines);             
         }
+        /// <summary>
+        /// Imports a BC lincense to the BC server.
+        /// </summary>
         public void ImportLicense(string LicenseFilePath)
         {
             List<string> SourceLines = new List<string>(); 
@@ -371,6 +432,9 @@ namespace AxBcAdmin
         }
 
         /* properties */
+        /// <summary>
+        /// Returns a list of all BC services in the local machine.
+        /// </summary>
         static public List<BcService> Services
         {
             get
@@ -384,7 +448,7 @@ namespace AxBcAdmin
                     {
                         // example name: 
                         // Microsoft Dynamics 365 Business Central Server [BC230]
-                        if (Service.DisplayName.ToLower().Contains(ServicePrefix.ToLower()))
+                        if (Service.DisplayName.Contains(ServicePrefix, StringComparison.InvariantCultureIgnoreCase))
                         {
                             BcService Item = new BcService(Service);
                             fServices.Add(Item);
@@ -401,16 +465,50 @@ namespace AxBcAdmin
             }
         }
         
+        /// <summary>
+        /// The status of the BC service
+        /// </summary>
         public ServiceControllerStatus Status { get { return Service.Status; } }
-        public string StatusText { get { return Service.Status.ToString(); } } 
+        /// <summary>
+        /// A string representation of the status of the BC service
+        /// </summary>
+        public string StatusText { get { return Service.Status.ToString(); } }
+        /// <summary>
+        /// Service Display Name, e.g. <c> Microsoft Dynamics 365 Business Central Server [BC230]</c>
+        /// </summary>
         public string DisplayName { get; private set; }      // e.g. Microsoft Dynamics 365 Business Central Server [BC230]
-        public string ServiceName { get; private set; }      // e.g. ??
+        /// <summary>
+        /// Service Name, e.g. <c>MicrosoftDynamicsNavServer$BC230</c>
+        /// </summary>
+        public string ServiceName { get; private set; }      // e.g. MicrosoftDynamicsNavServer$BC230
+        /// <summary>
+        /// Instance Name, e.g. <c>BC230</c>
+        /// </summary>
         public string InstanceName { get; private set; }     // e.g. BC230
+        /// <summary>
+        /// Service folder, e.g. <c>C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\</c>
+        /// </summary>
         public string ServiceFolder { get; private set; }    // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\
+        /// <summary>
+        /// Config path, e.g. <c>C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config</c>
+        /// </summary>
         public string ConfigFilePath { get; private set; }   // e.g. C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\CustomSettings.config
+        /// <summary>
+        /// Path to the BC Admin Power Shell module, e.g. <c>C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\NavAdminTool.ps1</c>
+        /// </summary>
         public string NavAdminToolFilePath { get { return Path.Combine(ServiceFolder, "NavAdminTool.ps1"); } }
+        /// <summary>
+        /// <para>A list of <see cref="ConfigItem"/> instances. </para>
+        /// <para>A <see cref="ConfigItem"/> instance represents a settings in the <c>CustomSettings.config</c> file.</para>
+        /// </summary>
         public List<ConfigItem> ConfigList { get; } = new List<ConfigItem>();
+        /// <summary>
+        /// True when BC service is running.
+        /// </summary>
         public bool IsRunning { get { return Service.Status == ServiceControllerStatus.Running || Service.Status == ServiceControllerStatus.StartPending; } }
+        /// <summary>
+        /// The path of the last backup of the <c>CustomSettings.config</c>  file
+        /// </summary>
         public string LastBackupFilePath { get; private set; }
 
     }

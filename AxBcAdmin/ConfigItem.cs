@@ -1,10 +1,17 @@
 ﻿namespace AxBcAdmin
 {
+
+    /// <summary>
+    /// Represents a setting in the <c>CustomSettings.config</c> file
+    /// </summary>
     internal class ConfigItem
     {
         string fValue;
 
         /* construction */
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ConfigItem(XmlElement Element, XmlComment Comment)
         {
             Category = "Miscs";
@@ -56,16 +63,31 @@
         }
 
         /* public */
+        /// <summary>
+        /// Override. Returns a string representation of this instance.
+        /// </summary>
         public override string ToString()
         {
             return !string.IsNullOrWhiteSpace(Key) ? Key : base.ToString();
         }
 
         /* properties */
+        /// <summary>
+        /// Item Category
+        /// </summary>
         public string Category { get; }
+        /// <summary>
+        /// Name, e.g. <c>Instance Name</c>
+        /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// Key, e.g. <c>InstanceName</c>
+        /// </summary>
         public string Key { get; }
 
+        /// <summary>
+        /// Value, e.g. <c>BC230</c>
+        /// </summary>
         public string Value
         {
             get { return fValue; }
@@ -78,9 +100,21 @@
                 }
             }
         }
+        /// <summary>
+        /// The XML comment preceding the setting entry.
+        /// </summary>
         public string CommentText { get; }
+        /// <summary>
+        /// A list of possible values for the setting entry
+        /// </summary>
         public List<string> Options { get; } = new List<string>();
+        /// <summary>
+        /// True when its Options is not an empty list
+        /// </summary>
         public bool HasOptions { get { return Options.Count > 0; } }
+        /// <summary>
+        /// True when the Value of this instance changes.
+        /// </summary>
         public bool IsChanged { get; private set; }
     }
 }

@@ -30,7 +30,7 @@ This application can be used with any Business Central version and it aims to ma
         System.Windows.Forms.Timer fTimer;
         BindingSource bsServices;
 
-        /* events */
+        /* event handlers */
         void AnyClick(object sender, EventArgs e)
         {
             if (btnExit == sender)
@@ -68,11 +68,11 @@ This application can be used with any Business Central version and it aims to ma
             }
             else if (btnShowServiceConfig == sender)
             {
-                ShowServiceConfig();
+                ShowServiceConfigUI();
             }
             else if (btnCloseServiceConfig == sender)
             {
-                CloseServiceConfig();
+                CloseServiceConfigUI();
             }
             else if (btnSaveServiceConfig == sender)
             {
@@ -95,7 +95,7 @@ This application can be used with any Business Central version and it aims to ma
 
         void gridServices_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ShowServiceConfig();
+            ShowServiceConfigUI();
         }
         void bsServices_PositionChanged(object sender, EventArgs e)
         {
@@ -116,6 +116,9 @@ This application can be used with any Business Central version and it aims to ma
         }
 
         /* private */
+        /// <summary>
+        /// Initializes this form
+        /// </summary>
         void FormInitialize()
         {
             App.MainForm = this;
@@ -165,10 +168,18 @@ This application can be used with any Business Central version and it aims to ma
             Log(SInfo);
         }
  
+        /// <summary>
+        /// Returns the currently selected BC service, if any, else null.
+        /// </summary>
+        /// <returns></returns>
         BcService GetCurrentService()
         {
             return bsServices.Current is BcService ? bsServices.Current as BcService : null;
         }
+        
+        /// <summary>
+        /// Starts the service
+        /// </summary>
         void StartService()
         {
             BcService BCS = GetCurrentService();
@@ -192,6 +203,9 @@ This application can be used with any Business Central version and it aims to ma
             if (BCS.Status == ServiceControllerStatus.Running)
                LogEnd("DONE");
         }
+        /// <summary>
+        /// Restarts the service
+        /// </summary>
         void RestartService()
         {
             BcService BCS = GetCurrentService();
@@ -209,6 +223,9 @@ This application can be used with any Business Central version and it aims to ma
             if (BCS.Status == ServiceControllerStatus.Running)
                 LogEnd("DONE");
         }
+        /// <summary>
+        /// Stops the service
+        /// </summary>
         void StopService()
         {
             BcService BCS = GetCurrentService();
@@ -235,10 +252,16 @@ This application can be used with any Business Central version and it aims to ma
                 LogEnd("DONE");
         }
 
+        /// <summary>
+        /// Refreshes the display in the services grid
+        /// </summary>
         void RefreshStatus()
         {
             bsServices.ResetBindings(true);
         }
+        /// <summary>
+        /// Opens Windows File Explorer in the BC service folder and selects the <c>CustomSettings.config</c> file.
+        /// </summary>
         void ShowConfigFile()
         {
             BcService BCS = GetCurrentService();
@@ -255,8 +278,11 @@ This application can be used with any Business Central version and it aims to ma
             }
                 
         }
-        
-        void ShowServiceConfig()
+        /// <summary>
+        /// Creates a <see cref="TabPage"/> for each Category and then adds a <see cref="ConfigItemUserControl"/> for each <see cref="ConfigItem"/> in the page.
+        /// <para>Actually creates the User Interface for editing the <c>CustomSettings.config</c> file</para>
+        /// </summary>
+        void ShowServiceConfigUI()
         {
             // nested functions
             // ----------------------------------------------------------
@@ -332,7 +358,10 @@ This application can be used with any Business Central version and it aims to ma
  
             }
         }
-        void CloseServiceConfig()
+        /// <summary>
+        /// Destroys the User Interface used in editing the <c>CustomSettings.config</c> file
+        /// </summary>
+        void CloseServiceConfigUI()
         {
             BcService BCS = GetCurrentService();
             if (BCS != null)
@@ -343,6 +372,9 @@ This application can be used with any Business Central version and it aims to ma
 
             Pager.TabPages.Clear();
         }
+        /// <summary>
+        /// Saves any changed settings (<see cref="ConfigItem"/> items) in the <c>CustomSettings.config</c> file
+        /// </summary>
         void SaveServiceConfig()
         {
             BcService BCS = GetCurrentService();
@@ -361,6 +393,10 @@ This application can be used with any Business Central version and it aims to ma
                 }
             }
         }
+        /// <summary>
+        /// Helper for reminding the user to restart the service.
+        /// </summary>
+        /// <param name="BCS"></param>
         void ShowRestartServerMessages(BcService BCS)
         {
             Log("Config is saved");
@@ -370,7 +406,9 @@ This application can be used with any Business Central version and it aims to ma
 
             Log($"A backup of the CustomSettings.config file is saved at \n {BCS.LastBackupFilePath}");
         }
-
+        /// <summary>
+        /// Displays the <see cref="DatabaseCredentialsDialog"/>
+        /// </summary>
         void ShowDatabaseCredentialsDialog()
         {
             BcService BCS = GetCurrentService();
@@ -386,6 +424,9 @@ This application can be used with any Business Central version and it aims to ma
             }
         }
  
+        /// <summary>
+        /// Exports the current BC license
+        /// </summary>
         void ExportLicense()
         {
             BcService BCS = GetCurrentService();
@@ -396,6 +437,9 @@ This application can be used with any Business Central version and it aims to ma
             }
                 
         }
+        /// <summary>
+        /// Imports a license in the BC server
+        /// </summary>
         void ImportLicense()
         {
             BcService BCS = GetCurrentService();
@@ -417,6 +461,9 @@ This application can be used with any Business Central version and it aims to ma
                 
         }
 
+        /// <summary>
+        /// Scrolls to the last line of the log control.
+        /// </summary>
         void ScrollToEnd()
         {
             edtLog.SelectionStart = edtLog.Text.Length;
@@ -424,6 +471,9 @@ This application can be used with any Business Central version and it aims to ma
         }
 
         /* public */
+        /// <summary>
+        /// Log method
+        /// </summary>
         public void Log(string LogText)
         {
             if (!InvokeRequired)
@@ -440,14 +490,23 @@ This application can be used with any Business Central version and it aims to ma
                 }));
             }
         }
+        /// <summary>
+        /// Log method
+        /// </summary>
         public void LogStart(string LogText)
         {
             edtLog.AppendText(LogText);
         }
+        /// <summary>
+        /// Log method
+        /// </summary>
         public void LogAppend(string LogText)
         {
             edtLog.AppendText(LogText);
         }
+        /// <summary>
+        /// Log method
+        /// </summary>
         public void LogEnd(string LogText)
         {
             edtLog.AppendText(LogText + Environment.NewLine);
@@ -455,6 +514,9 @@ This application can be used with any Business Central version and it aims to ma
         }
 
         /* overrides */
+        /// <summary>
+        /// Override
+        /// </summary>
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
@@ -463,6 +525,9 @@ This application can be used with any Business Central version and it aims to ma
         }
 
         /* construction */
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();

@@ -9,14 +9,42 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace AxBcAdmin
 {
+
+    /// <summary>
+    /// The input control of a <see cref="ConfigItem"/> instance.
+    /// <para>Represents a setting in the <c>CustomSettings.config</c> file </para>
+    /// </summary>
     public partial class ConfigItemUserControl : UserControl
     {
  
         ConfigItem ConfigItem;
+
+        /* event handlers */
+        void cboValueList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ConfigItem.Value = cboValueList.SelectedItem.ToString();
+        }
+        void edtValue_TextChanged(object sender, EventArgs e)
+        {
+            ConfigItem.Value = edtValue.Text;
+        }
+        void AnyClick(object sender, EventArgs e)
+        {
+            App.Log("----------------------------------------------");
+            App.Log(ConfigItem.Name);
+            App.Log(ConfigItem.CommentText);
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ConfigItemUserControl()
         {
             InitializeComponent();
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
         internal ConfigItemUserControl(ConfigItem ConfigItem): this()
         {
             this.ConfigItem = ConfigItem;
@@ -47,22 +75,8 @@ namespace AxBcAdmin
             cboValueList.Click += AnyClick;
         }
 
-        void cboValueList_SelectedValueChanged(object sender, EventArgs e)
-        {
-            ConfigItem.Value = cboValueList.SelectedItem.ToString();
-        }
 
-        void edtValue_TextChanged(object sender, EventArgs e)
-        {
-            ConfigItem.Value = edtValue.Text;
-        }
 
-        void AnyClick(object sender, EventArgs e)
-        {
-            App.Log("----------------------------------------------"); 
-            App.Log(ConfigItem.Name);
-            App.Log(ConfigItem.CommentText);
-        }
 
     }
 }
