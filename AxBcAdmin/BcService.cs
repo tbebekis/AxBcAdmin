@@ -241,91 +241,7 @@ namespace AxBcAdmin
 
         }
  
-        public bool SetDatabaseCredentials(string UserName, string Password)
-        {
-            // Windows Authentication -> Clear Database Credentials
-            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password)) 
-            {
-                XmlDocument Doc = new XmlDocument();
-                Doc.Load(ConfigFilePath);
-                XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
-
-                string[] DatabaseKeys = { "DatabaseUserName", "ProtectedDatabasePassword" };
-                int Count = 0;
-
-                foreach (string Key in DatabaseKeys)
-                {
-                    foreach (XmlNode Node in AppSettingsNode)
-                    {
-                        if (Node.NodeType == XmlNodeType.Element)
-                        {
-                            XmlElement Element = Node as XmlElement; //CI.Key
-
-                            XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
-
-                            if (Attr != null && Attr.Value == Key)
-                            {
-                                Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
-                                if (Attr != null)
-                                {
-                                    Attr.Value = "";
-                                    Count++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                BackupConfigFile();
-                Doc.Save(ConfigFilePath);
-
-                return Count == DatabaseKeys.Length;
-            }
-            else // SQL Server Authentication -> Set Database Credentials
-            {
-                BackupConfigFile(); 
-
-                ProcessStartInfo PSI = new ProcessStartInfo();
-                PSI.UseShellExecute = false;
-                PSI.FileName = "powershell.exe";
-                PSI.WindowStyle = ProcessWindowStyle.Hidden;
-                PSI.RedirectStandardInput = true; 
-
-                using (Process P = new Process())
-                {
-                    P.StartInfo = PSI;
-                    P.Start();
-
-                    using (StreamWriter SW = P.StandardInput)
-                    {
-                        if (SW.BaseStream.CanWrite)
-                        {
-                            /*
-                            Import-Module 'C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\NavAdminTool.ps1'
-                            $UserName = 'USER_NAME'
-                            $Password = 'PASSWORD'
-                            $Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
-                            $Creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
-                            Set-NAVServerConfiguration -ServerInstance 'BC230' -DatabaseCredentials $Creds 
-                             */
-
-                            SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
-                            SW.WriteLine($"$UserName = '{UserName}'");
-                            SW.WriteLine($"$Password = '{Password}'");
-                            SW.WriteLine($"$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force");
-                            SW.WriteLine($"$Creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password");
-                            SW.WriteLine($"Set-NAVServerConfiguration -ServerInstance '{InstanceName}' -DatabaseCredentials $Creds");
-                        }
-                    }
-                }
-
-                return true;
-            }
-
-        }
-
-        public void ExportLicense()
+        void ExecutePowerShell(List<string> SourceLines)
         {
             StringBuilder sbErrors = new StringBuilder();
             StringBuilder sbOutput = new StringBuilder();
@@ -350,50 +266,108 @@ namespace AxBcAdmin
                 using (StreamWriter SW = P.StandardInput)
                 {
                     if (SW.BaseStream.CanWrite)
-                    { 
-                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
-                        SW.WriteLine($"Export-NAVServerLicenseInformation -ServerInstance '{InstanceName}'"); 
+                    {
+                        foreach (string Line in SourceLines)
+                            SW.WriteLine(Line);
                     }
                 }
-                
+
                 P.BeginOutputReadLine();
                 P.BeginErrorReadLine();
                 P.WaitForExit();
             }
 
- 
+
             if (sbErrors.ToString().Trim().Length > 0)
                 App.Throw(sbErrors.ToString());
 
             if (sbOutput.Length > 0)
-            {
                 App.Log(sbOutput.ToString());
-            }
+
         }
-        public void ImportLicense(string LicenseFilePath)
+        
+        bool SetWindowsAuthentication()
         {
-            ProcessStartInfo PSI = new ProcessStartInfo();
-            PSI.UseShellExecute = false;
-            PSI.FileName = "powershell.exe";
-            PSI.WindowStyle = ProcessWindowStyle.Hidden;
-            PSI.RedirectStandardInput = true;
+            XmlDocument Doc = new XmlDocument();
+            Doc.Load(ConfigFilePath);
+            XmlNode AppSettingsNode = Doc.SelectSingleNode("//appSettings");
 
-            using (Process P = new Process())
+            string[] DatabaseKeys = { "DatabaseUserName", "ProtectedDatabasePassword" };
+            int Count = 0;
+
+            foreach (string Key in DatabaseKeys)
             {
-                P.StartInfo = PSI;
-                P.Start();
-
-                using (StreamWriter SW = P.StandardInput)
+                foreach (XmlNode Node in AppSettingsNode)
                 {
-                    if (SW.BaseStream.CanWrite)
+                    if (Node.NodeType == XmlNodeType.Element)
                     {
-                        SW.WriteLine($"Import-Module '{NavAdminToolFilePath}'");
-                        SW.WriteLine($"$LicensePath = '{LicenseFilePath}'"); 
-                        SW.WriteLine($"$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force");
-                        SW.WriteLine($"Import-NAVServerLicense -ServerInstance '{InstanceName}' -LicenseFile $LicensePath");
+                        XmlElement Element = Node as XmlElement; //CI.Key
+
+                        XmlAttribute Attr = Element.Attributes.GetNamedItem("key") as XmlAttribute;
+
+                        if (Attr != null && Attr.Value == Key)
+                        {
+                            Attr = Element.Attributes.GetNamedItem("value") as XmlAttribute;
+                            if (Attr != null)
+                            {
+                                Attr.Value = "";
+                                Count++;
+                                break;
+                            }
+                        }
                     }
                 }
             }
+
+            BackupConfigFile();
+            Doc.Save(ConfigFilePath);
+
+            return Count == DatabaseKeys.Length;
+        }
+        bool SetSqlServerAuthentication(string UserName, string Password)
+        {
+            BackupConfigFile();
+
+            List<string> SourceLines = new List<string>();
+
+            SourceLines.Add($"Import-Module '{NavAdminToolFilePath}'");
+            SourceLines.Add($"$UserName = '{UserName}'");
+            SourceLines.Add($"$Password = '{Password}'");
+            SourceLines.Add($"$Password = ConvertTo-SecureString -String $Password -AsPlainText -Force");
+            SourceLines.Add($"$Creds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password");
+            SourceLines.Add($"Set-NAVServerConfiguration -ServerInstance '{InstanceName}' -DatabaseCredentials $Creds");
+
+            ExecutePowerShell(SourceLines);
+
+            return true;
+        }
+ 
+        public bool SetDatabaseCredentials(string UserName, string Password)
+        {
+            // Windows Authentication -> Clear Database Credentials
+            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password)) 
+                return SetWindowsAuthentication();
+            else // SQL Server Authentication -> Set Database Credentials
+                return SetSqlServerAuthentication(UserName, Password);
+        }
+
+        public void ExportLicense()
+        {
+            List<string> SourceLines = new List<string>();
+
+            SourceLines.Add($"Import-Module '{NavAdminToolFilePath}'");
+            SourceLines.Add($"Export-NAVServerLicenseInformation -ServerInstance '{InstanceName}'");
+
+            ExecutePowerShell(SourceLines);             
+        }
+        public void ImportLicense(string LicenseFilePath)
+        {
+            List<string> SourceLines = new List<string>(); 
+
+            SourceLines.Add($"Import-Module '{NavAdminToolFilePath}'");
+            SourceLines.Add($"$LicensePath = '{LicenseFilePath}'");
+            SourceLines.Add($"Import-NAVServerLicense -ServerInstance '{InstanceName}' -LicenseFile $LicensePath");
+            ExecutePowerShell(SourceLines);             
         }
 
         /* properties */
