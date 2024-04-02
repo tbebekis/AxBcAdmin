@@ -352,7 +352,7 @@ This application can be used with any Business Central version and it aims to ma
                 if (TempList.Count > 0)
                 {
                     TempList = TempList.OrderBy(item => item.Name).ToList();
-                    LogMiscs(TempList);
+                    //LogMiscs(TempList);
                     AddTabPage("Miscs", TempList);
                 }                    
  
