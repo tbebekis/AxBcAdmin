@@ -75,12 +75,12 @@ namespace AxBcAdmin
 
             this.DisplayName = Service.DisplayName;
             this.ServiceName = Service.ServiceName;
-            this.InstanceName = S;
+            this.InstanceName = S; 
 
             using (ManagementObject wmiService = new ManagementObject($"Win32_Service.Name='{Service.ServiceName}'"))  
             {
                 wmiService.Get();
-                S = wmiService["PathName"].ToString().Trim();
+                S = wmiService["PathName"].ToString().Trim();                
 
                 // "C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\Microsoft.Dynamics.Nav.Server.exe" $BC230 /config "C:\Program Files\Microsoft Dynamics 365 Business Central\230\Service\Microsoft.Dynamics.Nav.Server.dll.config"
                 if (S[0] == '"')
@@ -88,15 +88,17 @@ namespace AxBcAdmin
                     int Index = S.IndexOf('"', 1);
                     S = S.Substring(1, Index - 1);
 
-                    ServiceFolder = Path.GetDirectoryName(S);
-                    S = Path.Combine(ServiceFolder, "CustomSettings.config");
-
-                    if (!File.Exists(S))
-                        App.Throw($"Settings File {S} not found");
-
-                    ConfigFilePath = S;
+                    ServiceFolder = Path.GetDirectoryName(S);                    
                 }
             }
+
+            if (string.IsNullOrWhiteSpace(ServiceFolder))
+                App.Throw("Cannot find Business Central service path.");
+
+            ConfigFilePath = Path.Combine(ServiceFolder, "CustomSettings.config");
+
+            if (!File.Exists(ConfigFilePath))
+                App.Throw($"Settings File '{ConfigFilePath}' not found"); 
         }
 
         /* public */
