@@ -433,6 +433,23 @@ namespace AxBcAdmin
             ExecutePowerShell(SourceLines);             
         }
 
+        static public void Refresh()
+        {
+            if (!Refreshing)
+            {
+                Refreshing = true;
+                try
+                {
+                     foreach (var Item in fServices)
+                        Item.Service.Refresh();
+                }
+                finally
+                {
+                    Refreshing = false;
+                }
+            }
+        }
+
         /* properties */
         /// <summary>
         /// Returns a list of all BC services in the local machine.
@@ -443,6 +460,7 @@ namespace AxBcAdmin
             {
                 if (fServices == null)
                 {
+
                     ServiceController[] List = ServiceController.GetServices();
                     fServices = new List<BcService>();
 
@@ -463,9 +481,10 @@ namespace AxBcAdmin
                 }
 
                 return fServices;
-
             }
         }
+
+
         
         /// <summary>
         /// The status of the BC service
@@ -512,6 +531,8 @@ namespace AxBcAdmin
         /// The path of the last backup of the <c>CustomSettings.config</c>  file
         /// </summary>
         public string LastBackupFilePath { get; private set; }
+
+        static public bool Refreshing { get; private set; }
 
     }
 }

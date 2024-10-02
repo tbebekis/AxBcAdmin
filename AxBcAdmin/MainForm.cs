@@ -257,6 +257,7 @@ This application can be used with any Business Central version and it aims to ma
         /// </summary>
         void RefreshStatus()
         {
+            BcService.Refresh();
             bsServices.ResetBindings(true);
         }
         /// <summary>
