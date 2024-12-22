@@ -6,9 +6,10 @@
 		<!-- <Nullable>enable</Nullable> -->
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>2024.4.3</AssemblyVersion>
-		<ProductVersion>2024.4.3</ProductVersion>		
-		<ApplicationIcon>AppIco.ico</ApplicationIcon>
+		<AssemblyVersion>2024.12.22</AssemblyVersion>
+		<ProductVersion>2024.12.22</ProductVersion>		
+		<ApplicationIcon>AppIco.ico</ApplicationIcon>		
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Management.Automation" Version="7.4.0" />
+		<PackageReference Include="System.Management.Automation" Version="7.4.6" />
 		<PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" />
 		<!-- <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.0" />  -->
 	</ItemGroup>

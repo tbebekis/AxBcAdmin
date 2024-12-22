@@ -318,6 +318,7 @@ This application can be used with any Business Central version and it aims to ma
                 }
             }
             // ----------------------------------------------------------
+            /*
             void LogMiscs(List<ConfigItem> List)
             {
                 StringBuilder SB = new StringBuilder();
@@ -327,6 +328,7 @@ This application can be used with any Business Central version and it aims to ma
                 SB.AppendLine("=========================================================");
                 Log(SB.ToString());
             }
+            */
             // ----------------------------------------------------------
 
             BcService BCS = GetCurrentService();
